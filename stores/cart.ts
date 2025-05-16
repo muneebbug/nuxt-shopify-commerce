@@ -11,8 +11,6 @@ export const useCartStore = defineStore('cart', {
     };
   },
   actions: {
-
-
     setCart(cart: Cart | undefined) {
       this.cart = cart;
     },

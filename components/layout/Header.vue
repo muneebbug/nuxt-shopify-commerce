@@ -1,8 +1,8 @@
 <template>
   <header ref="header" class="header page-width">
-    <BrandPrimaryButton :tiny=true class="navigation-hub-btn">
+    <Button :tiny=true class="navigation-hub-btn">
       <Icon name="ic:baseline-menu" size="30" />
-    </BrandPrimaryButton>
+    </Button>
     <NuxtLink to="/" class="header__heading-link justify-self-start text-left">
       <div class="header__logo-wrapper">
         <img src="/fuel-logo.png" alt="logo" class="header__logo max-w-[90px] lg:max-w-full" width="100">
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-
+import { Button } from '@/components/ui/button'
 const cartStore = useCartStore();
 
 const totalAmount = computed(() => cartStore.cart?.cost?.totalAmount?.amount || 0);

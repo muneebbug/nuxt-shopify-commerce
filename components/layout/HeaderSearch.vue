@@ -84,9 +84,9 @@
                                   </h3>
                                 </div>
                                 <div class="quick-add flex items-center relative z-[1]">
-                                  <BrandPrimaryLinkButton :to="`/product/${product.handle}`" :tiny="true">
+                                  <Button :to="`/product/${product.handle}`" :tiny="true">
                                     <Icon name="material-symbols-light:arrow-outward" size="20" />
-                                  </BrandPrimaryLinkButton>
+                                  </Button>
                                 </div>
                               </div>
                             </div>
@@ -109,6 +109,7 @@
 
 <script setup lang="ts">
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import type { SearchResults } from '~/lib/shopify/types';
 
 const { isSearchOpened, open, close, performSearch, isSearching } = useSearch();

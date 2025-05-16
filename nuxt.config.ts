@@ -1,15 +1,16 @@
 import { createResolver } from '@nuxt/kit'
 const { resolve } = createResolver(import.meta.url)
+import tailwindcss from '@tailwindcss/vite'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: "2024-11-01",
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
   },
   modules: [
     '@pinia/nuxt',
     '@formkit/auto-animate',
-    '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
     '@nuxtjs/google-fonts',
     '@pinia-plugin-persistedstate/nuxt',
@@ -40,7 +41,8 @@ export default defineNuxtConfig({
   },
 
   css: [
-    resolve('./assets/scss/global.scss')
+    resolve('./assets/css/tailwind.css'),
+    resolve('./assets/css/main.css')
   ],
 
   imports: {
@@ -75,6 +77,11 @@ export default defineNuxtConfig({
   devServer: {
     port: 3000,
     host: '127.0.0.1'
+  },
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
   },
 
   runtimeConfig: {

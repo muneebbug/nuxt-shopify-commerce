@@ -16,9 +16,9 @@
               </h3>
             </div>
             <div class="card-collection__button">
-              <BrandPrimaryLinkButton :to="collectionUrl" :tiny="true">
+              <Button :to="collectionUrl" :tiny="true">
                 <Icon name="material-symbols-light:arrow-outward" size="20" />
-              </BrandPrimaryLinkButton>
+              </Button>
             </div>
           </div>
         </div>
@@ -40,6 +40,7 @@
 </template>
 
 <script setup>
+import { Button } from '@/components/ui/button'
 const props = defineProps({
   collection: {
     type: Object,

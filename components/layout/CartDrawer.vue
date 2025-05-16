@@ -74,9 +74,9 @@
             </h1>
           </div>
           <div class="empty-button">
-            <BrandPrimaryLinkButton to="/">
+            <Button to="/">
               Continue Shopping
-            </BrandPrimaryLinkButton>
+            </Button>
           </div>
         </div>
       </div>
@@ -92,9 +92,9 @@
             </p>
           </div>
         </div>
-        <BrandPrimaryButton class="w-full" @click="redirectToCheckout">
+        <Button class="w-full" @click="redirectToCheckout">
           Checkout
-        </BrandPrimaryButton>
+        </Button>
       </div>
 
 
@@ -104,6 +104,7 @@
 </template>
 
 <script setup lang="ts">
+import { Button } from '@/components/ui/button'
 import {
   Sheet,
   SheetContent,

@@ -74,9 +74,9 @@
                 </NumberField>
               </div>
 
-              <BrandPrimaryButton :loading="loading" class="flex-1" :disabled="quantity <= 0" @click="addToCart">
+              <Button :loading="loading" class="flex-1" :disabled="quantity <= 0" @click="addToCart">
                 Add to Cart
-              </BrandPrimaryButton>
+              </Button>
 
             </div>
 
@@ -96,6 +96,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { Button } from '@/components/ui/button'
 const { cart } = useCartStore();
 const { addItem } = useCart();
 
