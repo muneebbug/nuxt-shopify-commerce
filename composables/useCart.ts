@@ -12,7 +12,7 @@ export function useCart() {
       cartStore.setLoading(false);
     }
   };
-  
+
 
   async function addItem(selectedVariantId : string | undefined, quantity : number = 1){
     let cartId = useCookie('cartId')?.value;
@@ -23,7 +23,7 @@ export function useCart() {
       cartStore.setCart(cart);
 
       const { isOpened, open } = useCartDrawer();
-      
+
       if (!isOpened.value === true) {
         open();
       }
@@ -124,7 +124,7 @@ export function useCart() {
 /*
 this function should not be called. its useless at the time as it causes ssr issues.
 if i call this function before page load with await or onServerPrefetch, it causes ssr issues
-as the useCookie() is not available outside nuxt context 
+as the useCookie() is not available outside nuxt context
 therefore i am opting for a different solution but keeping this function here for reference
 */
   async function createCartAndSetCookie() {
@@ -132,7 +132,7 @@ therefore i am opting for a different solution but keeping this function here fo
     const cookie = useCookie('cartId');
     cookie.value = cart.id!
     return cart;
-  } 
+  }
 
   return {
     initializeCart,

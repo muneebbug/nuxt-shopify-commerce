@@ -1,109 +1,105 @@
 <template>
-  <div ref="searchTarget" class="inline-search-form ml-12 hidden lg:block relative">
-    <form @submit.prevent="search" class="field flex relative w-full">
-      <Input v-model="query" @keyup="search" @input="search" @focus="open" type="text" id="inline-search"
-        autocomplete="off" placeholder="Search" class="search__input field__input border-border border-opacity-20" />
-      <button type="submit" class="absolute right-6 inset-y-0 flex items-center justify-end px-2">
-        <Icon name="ph:magnifying-glass" size="30" class="size-8 text-current" />
+  <div ref="searchTarget" class="relative w-full max-w-sm">
+    <form @submit.prevent="search" class="relative">
+      <Input
+        v-model="query"
+        @keyup="search"
+        @input="search"
+        @focus="open"
+        type="search"
+        placeholder="Search products..."
+        class="w-full rounded-md pr-10"
+      />
+      <button
+        type="submit"
+        class="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+      >
+        <Icon name="ph:magnifying-glass" class="h-4 w-4" />
       </button>
     </form>
+
     <HeadlessPopover v-slot="{ open }">
-      <transition enter-active-class="transition duration-200 ease-out" enter-from-class="translate-y-1 opacity-0"
-        enter-to-class="translate-y-0 opacity-100" leave-active-class="transition duration-150 ease-in"
-        leave-from-class="translate-y-0 opacity-100" leave-to-class="translate-y-1 opacity-0">
-        <HeadlessPopoverPanel v-if="isSearchOpened" static :style="{ maxHeight: `${props.searchPopoverMaxHeight}px` }"
-          class="predictive-search overflow-scrollbar p-12 absolute border border-border border-opacity-10 bg-white z-[3] rounded-medium overflow-y-auto block w-full min-w-[500px]">
-          <div v-if="isSearching" class="predictive-search__loading-state flex justify-center p-4">
-            <Icon name="local:button-loader" class="w-[18px]" />
+      <transition
+        enter-active-class="transition ease-out duration-200"
+        enter-from-class="opacity-0 translate-y-1"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition ease-in duration-150"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 translate-y-1"
+      >
+        <HeadlessPopoverPanel
+          v-if="isSearchOpened"
+          static
+          :style="{ maxHeight: `${props.searchPopoverMaxHeight}px` }"
+          class="absolute z-50 mt-1 w-full overflow-hidden overflow-y-auto rounded-md border bg-background p-4 shadow-md"
+        >
+          <!-- Loading state -->
+          <div v-if="isSearching" class="flex items-center justify-center py-4">
+            <Icon name="local:button-loader" class="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
+
           <template v-else>
-            <div v-if="results && results?.totalCount <= 0 && !isSearching && query"
-              class="predictive-search-option-search-keywords mb-8 p-12 break-all border border-border border-opacity-10 rounded-medium text-center">
-              <h2 class="h5">
-                No Results Found
-              </h2>
-              <NuxtLink :to="`/search/q=${query}`">
+            <!-- No results -->
+            <div
+              v-if="results && results?.totalCount <= 0 && !isSearching && query"
+              class="rounded-md border p-4 text-center"
+            >
+              <p class="text-sm font-medium">No results found</p>
+              <NuxtLink
+                :to="`/search/q=${query}`"
+                class="mt-2 text-sm text-primary hover:underline"
+              >
                 Search for "{{ query }}"
               </NuxtLink>
             </div>
 
-
-            <div v-if="!results || results?.totalCount <= 0"
-              class="predictive-search__result-group predictive-custom-suggestions">
-              <div class="">
-                <h2 id="predictive-search-custom-queries" class="predictive-search__heading h5 mb-4">
-                  Popular collections
-                </h2>
-                <ul id="predictive-search-custom-queries-list"
-                  class="predictive-search__results-list flex flex-wrap gap-6">
-                  <li v-for="i in 5" :key="i" id="predictive-search-option-query-1" class="predictive-search__list-item"
-                    role="option" aria-selected="false">
-                    <a href="/collections/endurance-boost"
-                      class="predictive-search__item border border-border border-opacity-20 rounded-medium flex text-left w-full max-w-fit gap-4 text-[1.4rem] font-bold p-6"
-                      tabindex="-1">
-                      Nutritionals
-                    </a>
-                  </li>
-                </ul>
+            <!-- Popular collections -->
+            <div v-if="!results || results?.totalCount <= 0" class="space-y-4">
+              <h3 class="text-sm font-medium">Popular collections</h3>
+              <div class="flex flex-wrap gap-2">
+                <NuxtLink
+                  v-for="(collection, i) in ['Nutritionals', 'Supplements', 'Protein', 'Vitamins', 'Pre-workouts']"
+                  :key="i"
+                  :to="`/collection/${collection.toLowerCase()}`"
+                  class="inline-flex items-center rounded-md border bg-muted px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted/80"
+                >
+                  {{ collection }}
+                </NuxtLink>
               </div>
             </div>
-            <div v-if="results && results?.totalCount > 0" class="predictive-search-results">
-              <div class="predictive-search-results-groups-wrapper flex flex-wrap gap-12 pb-12">
-                <div v-if="results.products.length > 0" class="predictive-search__result-group w-full grid gap-12">
-                  <div class="predictive-search__result-group">
-                    <div class="">
-                      <h2 class="predictive-search-products h5 mb-6">
-                        Products
-                      </h2>
-                      <ul class="predictive-search__results-list grid gap-6">
-                        <li v-for="product in results.products" class="predictive-search__list-item">
-                          <div class="product-card-wrapper h-full relative">
-                            <div style="--ratio-percent: 131.95876288659795%;"
-                              class="card flex p-12 border border-border border-opacity-20 rounded-large items-center gap-6 text-left">
-                              <div class="card__inner ratio w-full max-w-[80px] flex relative items-stretch"
-                                style="--ratio-percent: 131.95876288659795%;">
-                                <NuxtLink :to="`/product/${product.handle}`"
-                                  class="absolute top-0 left-0 right-0 bottom-0 opacity-0 z-[1] w-full h-full">
-                                  {{ product.title }}
-                                </NuxtLink>
-                                <div
-                                  class="card__media rounded-medium overflow-hidden z-0 w-full bottom-0 absolute top-0">
-                                  <div
-                                    class="media w-full absolute bottom-0 top-0 bg-transparent block overflow-hidden">
-                                    <img :src="product.featuredImage.url"
-                                      class="block max-w-full w-full h-full absolute top-0 bottom-0 left-0 right-0 object-cover object-center" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="card__content flex gap-4 justify-between w-full">
-                                <div class="card__information w-full">
-                                  <h3 class="h6 card__heading">
-                                    <NuxtLink :to="`/product/${product.handle}`">
-                                      {{ product.title }}
-                                    </NuxtLink>
-                                  </h3>
-                                </div>
-                                <div class="quick-add flex items-center relative z-[1]">
-                                  <Button :to="`/product/${product.handle}`" :tiny="true">
-                                    <Icon name="material-symbols-light:arrow-outward" size="20" />
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
+
+            <!-- Results -->
+            <div v-if="results && results?.totalCount > 0" class="space-y-4">
+              <div v-if="results.products.length > 0" class="space-y-4">
+                <h3 class="text-sm font-medium">Products</h3>
+                <div class="space-y-2">
+                  <NuxtLink
+                    v-for="product in results.products"
+                    :key="product.id"
+                    :to="`/product/${product.handle}`"
+                    class="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-muted"
+                  >
+                    <div class="h-10 w-10 overflow-hidden rounded-md border bg-background">
+                      <img
+                        :src="product.featuredImage.url"
+                        :alt="product.title"
+                        class="h-full w-full object-cover object-center"
+                      />
                     </div>
-                  </div>
+                    <div class="flex-1 truncate">
+                      <p class="line-clamp-1 text-sm font-medium">{{ product.title }}</p>
+                    </div>
+                    <div class="flex h-8 w-8 items-center justify-center rounded-md hover:bg-background">
+                      <Icon name="lucide:arrow-right" class="h-4 w-4" />
+                    </div>
+                  </NuxtLink>
                 </div>
               </div>
             </div>
           </template>
-
         </HeadlessPopoverPanel>
       </transition>
     </HeadlessPopover>
-
   </div>
 </template>
 
@@ -114,11 +110,10 @@ import type { SearchResults } from '~/lib/shopify/types';
 
 const { isSearchOpened, open, close, performSearch, isSearching } = useSearch();
 const query = ref('');
-const loading = ref(false);
 
 const results = ref<SearchResults>();
-
 const searchTarget = ref(null);
+
 onClickOutside(searchTarget, () => close());
 
 const search = useDebounceFn(async () => {
@@ -128,10 +123,6 @@ const search = useDebounceFn(async () => {
   }
   results.value = await performSearch(query?.value);
 }, 250);
-
-
-
-
 
 const props = defineProps({
   searchPopoverMaxHeight: {
@@ -159,12 +150,4 @@ nuxtApp.hook('page:start', () => {
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.12);
 }
 
-.search__input {
-  min-height: 2px;
-  height: 5.6rem;
-  padding: 1.5rem 2rem;
-  padding-right: 9.8rem;
-  margin: 1px;
-  min-width: calc(7rem + 2px);
-}
 </style>

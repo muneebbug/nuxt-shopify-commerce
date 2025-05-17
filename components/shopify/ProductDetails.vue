@@ -1,93 +1,65 @@
 <template>
-  <div class="product grid grid-cols-2">
+  <div class="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2">
     <ProductMediaGallery :product="product" />
-    <div class="product-info__wrapper md:pl-20">
-      <div class="product-info">
-        <p class="uppercase">
-          {{ product.vendor }}
-        </p>
-        <div class="product__title">
-          <h1 class="h3">
-            {{ product.title }}
-          </h1>
-        </div>
-        <div class="price">
-          <div class="price__container">
-            <div class="price__sale flex flex-wrap items-center gap-x-4 gap-y-2 mt-4"
-              v-if="currentVariantCompareAtPrice > 0 && currentVariantCompareAtPrice > currentVariantPrice">
-              <span class="price-item price-item--sale text-[2.8rem] font-semibold text-red-700">
-                ${{ currentVariantPrice }}
-              </span>
-              <span>
-                <s class="price-item price-item--regular text-[1.4rem] font-semibold">
-                  ${{ currentVariantCompareAtPrice }}
-                </s>
-              </span>
-            </div>
 
-            <div class="price__regular mt-4" v-else>
-              <span class="price-item price-item--regular text-[2.8rem] font-semibold">
-                ${{ currentVariantPrice }}
-              </span>
-            </div>
-
-            <!-- Dynamically generated options -->
-            <div class="variant-radios my-12">
-              <fieldset v-for="option in options" :key="option.id" class="mb-12">
-                <HeadlessRadioGroup v-model="selectedOptions[option.name]" class="space-y-2">
-                  <HeadlessRadioGroupLabel class="block mb-4 "><span class="font-bold">{{ option.name }}</span> : {{
-                    selectedOptions[option.name] }}</HeadlessRadioGroupLabel>
-                  <div class="flex flex-wrap gap-x-2 gap-y-2">
-                    <HeadlessRadioGroupOption v-for="value in option.values" :key="value" v-slot="{ checked }"
-                      :value="value">
-                      <div
-                        class="px-[2rem] py-[1.7rem] text-center select-none cursor-pointer border border-opacity-20 rounded-small"
-                        :class="checked ? 'border-ring' : 'border-border'">
-                        {{ value }}
-                      </div>
-                    </HeadlessRadioGroupOption>
-                  </div>
-
-                </HeadlessRadioGroup>
-              </fieldset>
-
-
-            </div>
-            <!-- {{ selectedOptions }}
-
-            {{ selectedValues }}
-
-            <pre>
-              {{ currentVariant }}
-            </pre> -->
-            <!-- <pre>
-              {{ cart.cost }}
-            </pre> -->
-            <div class="quantity-add__button flex items-center gap-6 my-12">
-              <div class="quantity-input">
-                <NumberField id="age" :default-value="1" :min="1" v-model="quantity">
-                  <NumberFieldContent>
-                    <NumberFieldDecrement />
-                    <NumberFieldInput />
-                    <NumberFieldIncrement />
-                  </NumberFieldContent>
-                </NumberField>
-              </div>
-
-              <Button :loading="loading" class="flex-1" :disabled="quantity <= 0" @click="addToCart">
-                Add to Cart
-              </Button>
-
-            </div>
-
-            <div class="product-description">
-              <h3 class="h4 mb-4">Description</h3>
-              <div class="rte" v-html="product.descriptionHtml">
-
-              </div>
-            </div>
-
+    <div class="space-y-8">
+      <div>
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-medium text-muted-foreground">{{ product.vendor }}</p>
+          <div class="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+            In stock
           </div>
+        </div>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{{ product.title }}</h1>
+
+        <div class="mt-4">
+          <div class="flex items-center gap-2" v-if="currentVariantCompareAtPrice > 0 && currentVariantCompareAtPrice > currentVariantPrice">
+            <p class="text-2xl font-semibold text-primary">${{ currentVariantPrice }}</p>
+            <p class="text-sm text-muted-foreground line-through">${{ currentVariantCompareAtPrice }}</p>
+          </div>
+          <p class="text-2xl font-semibold" v-else>${{ currentVariantPrice }}</p>
+        </div>
+      </div>
+
+      <div class="space-y-6 pt-4">
+        <!-- Dynamically generated options -->
+        <div class="space-y-6">
+          <fieldset v-for="option in options" :key="option.id" class="space-y-3">
+            <HeadlessRadioGroup v-model="selectedOptions[option.name]">
+              <HeadlessRadioGroupLabel class="block">
+                <span class="font-medium">{{ option.name }}:</span> {{ selectedOptions[option.name] }}
+              </HeadlessRadioGroupLabel>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <HeadlessRadioGroupOption v-for="value in option.values" :key="value" v-slot="{ checked }" :value="value">
+                  <div
+                    class="inline-flex cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm ring-offset-background transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    :class="checked ? 'border-primary' : 'border-input'">
+                    {{ value }}
+                  </div>
+                </HeadlessRadioGroupOption>
+              </div>
+            </HeadlessRadioGroup>
+          </fieldset>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="w-24">
+            <NumberField id="quantity" :default-value="1" :min="1" v-model="quantity">
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+            </NumberField>
+          </div>
+          <Button class="flex-1" size="lg" :loading="loading" :disabled="quantity <= 0" @click="addToCart">
+            Add to Cart
+          </Button>
+        </div>
+
+        <div class="border-t pt-6">
+          <h3 class="font-medium">Description</h3>
+          <div class="mt-4 prose prose-sm max-w-none text-muted-foreground" v-html="product.descriptionHtml"></div>
         </div>
       </div>
     </div>
@@ -101,9 +73,6 @@ const { cart } = useCartStore();
 const { addItem } = useCart();
 
 const loading = ref(false);
-
-
-
 
 import {
   NumberField,
@@ -143,7 +112,6 @@ const currentVariant = computed(() => product?.variants?.find((variant) => {
 
 // { "Flavor": "Berry Burst", "Weight": "500 g" } to [ "Berry Burst", "500 g" ]
 const selectedValues = computed(() => {
-  // return Object.values(selectedOptions.value);
   return Object.keys(selectedOptions.value).map(key => selectedOptions.value[key]);
 });
 
@@ -151,11 +119,7 @@ const selectedValues = computed(() => {
 const currentVariantPrice = computed(() => parseFloat(currentVariant.value?.price?.amount || 0));
 const currentVariantCompareAtPrice = computed(() => parseFloat(currentVariant.value?.compareAtPrice?.amount || 0));
 
-
-
-
 // Initialize selectedOptions with default values
-
 options.value.forEach(option => {
   selectedOptions.value[option.name] = option.values[0] || '';
 });
@@ -172,10 +136,6 @@ const addToCart = async () => {
     return;
   }
 }
-
-
-
-
 </script>
 
 <style scoped lang="scss">
@@ -188,9 +148,4 @@ const addToCart = async () => {
   }
 }
 
-.quantity-add__button {
-  input {
-    font-size: var(--font-body-size);
-  }
-}
 </style>

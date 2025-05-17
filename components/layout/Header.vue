@@ -1,24 +1,44 @@
 <template>
-  <header ref="header" class="header page-width">
-    <Button :tiny=true class="navigation-hub-btn">
-      <Icon name="ic:baseline-menu" size="30" />
-    </Button>
-    <NuxtLink to="/" class="header__heading-link justify-self-start text-left">
-      <div class="header__logo-wrapper">
-        <img src="/fuel-logo.png" alt="logo" class="header__logo max-w-[90px] lg:max-w-full" width="100">
+  <header ref="header" class="sticky top-0 z-40 w-full border-b bg-background">
+    <div class="container flex h-16 items-center justify-between py-4 m-auto">
+      <div class="flex items-center gap-4">
+        <Button variant="ghost" size="icon" class="md:hidden">
+          <Icon name="ic:baseline-menu" class="h-5 w-5" />
+        </Button>
+        <NuxtLink to="/" class="flex items-center">
+          <img src="/fuel-logo.png" alt="logo" class="h-8 w-auto" />
+        </NuxtLink>
+        <nav class="hidden md:flex items-center gap-6 ml-6">
+          <NuxtLink to="/" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Home
+          </NuxtLink>
+          <NuxtLink to="/collection/all" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Shop
+          </NuxtLink>
+        </nav>
       </div>
-    </NuxtLink>
 
-    <LayoutHeaderSearch :searchPopoverMaxHeight="searchPopoverMaxHeight" />
+      <div class="hidden md:block max-w-xs w-full mx-4 ml-auto">
+        <LayoutHeaderSearch :searchPopoverMaxHeight="searchPopoverMaxHeight" />
+      </div>
 
-    <div class="header__icons flex justify-self-end pr-4">
-      <button @click="open" class="header__icon header__icon--cart relative flex gap-4 items-center">
-        <Icon name="ph:shopping-cart-simple-light" size="30" />
-        <div class="cart-count-bubble relative flex items-center gap-2 font-semibold">
-          <span class="hidden sm:flex">${{ totalAmount }}</span>
-          <span class="">({{ totalQuantity }})</span>
-        </div>
-      </button>
+      <div class="flex items-center gap-4">
+        <Button @click="openMobileSearch" variant="ghost" size="icon" class="md:hidden">
+          <Icon name="ph:magnifying-glass" class="h-5 w-5" />
+        </Button>
+        <Button @click="open" variant="ghost" size="icon" class="relative">
+          <Icon name="ph:shopping-cart-simple-light" class="h-5 w-5" />
+          <span v-if="totalQuantity > 0"
+            class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+            {{ totalQuantity }}
+          </span>
+        </Button>
+      </div>
+    </div>
+
+    <!-- Mobile search -->
+    <div v-if="mobileSearchOpen" class="border-t py-3 px-4 md:hidden">
+      <LayoutHeaderSearch :searchPopoverMaxHeight="searchPopoverMaxHeight - 64" />
     </div>
   </header>
 </template>
@@ -32,18 +52,19 @@ const totalQuantity = computed(() => cartStore.cart?.totalQuantity || 0);
 
 const { open, close, isOpened } = useCartDrawer();
 
+// Mobile search state
+const mobileSearchOpen = ref(false);
+const openMobileSearch = () => {
+  mobileSearchOpen.value = !mobileSearchOpen.value;
+};
 
 // logic to calculate popover height for search
 const { height: windowHeight } = useWindowSize();
 const header = ref<HTMLElement | null>(null);
-// get header tag height
 const headerHeight = computed(() => header.value?.getBoundingClientRect().bottom || 0);
-
 const searchPopoverMaxHeight = computed(() => {
   return windowHeight.value - headerHeight.value;
 })
-
-
 </script>
 
 <style lang="scss">

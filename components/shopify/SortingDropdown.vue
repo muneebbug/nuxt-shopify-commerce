@@ -45,9 +45,3 @@ const emit = defineEmits(['update:modelValue']);
 const selected = useSyncProps<string>(props, 'modelValue', emit);
 </script>
 
-<style>
-.sorting-dropdown button {
-  height: 5.6rem;
-  padding: 15px;
-}
-</style>

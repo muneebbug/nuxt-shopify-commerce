@@ -1,27 +1,38 @@
 <template>
-  <div class="product-media__wrapper mb-10 md:mb-0 ">
-    <Carousel>
+  <div>
+    <Carousel class="w-full">
       <CarouselContent>
         <CarouselItem v-for="image in product?.images" :key="image.id">
-          <img :src="image.url" alt=""
-            class="w-full h-full object-cover object-center rounded-large border border-border border-opacity-20" />
+          <div class="overflow-hidden rounded-lg border bg-background">
+            <img
+              :src="image.url"
+              :alt="image.altText || product.title"
+              class="aspect-square w-full object-cover object-center transition-all duration-300 hover:scale-105"
+            />
+          </div>
         </CarouselItem>
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <div class="flex items-center justify-center gap-2 py-2">
+        <CarouselPrevious variant="outline" size="sm" class="h-8 w-8" />
+        <CarouselNext variant="outline" size="sm" class="h-8 w-8" />
+      </div>
     </Carousel>
 
-    <!-- 
-    * Single Image code: not deleting it for now until i have tested the carousel properly
-    -->
-
-    <!-- <div class="product-media__container relative w-full border rounded-large"
-      :style='`--ratio:${ratio};--preview-ratio:${ratio};`'>
-      <div class="product__media media relative">
-        <img :src="productPreviewImage" alt=""
-          class="block max-w-full absolute top-0 left-0 h-full w-full overflow-hidden object-cover object-center rounded-large">
+    <div class="mt-6 hidden md:block">
+      <div class="grid grid-cols-4 gap-4">
+        <button
+          v-for="(image, i) in product?.images.slice(0, 4)"
+          :key="i"
+          class="cursor-pointer overflow-hidden rounded-md border bg-background hover:border-primary"
+        >
+          <img
+            :src="image.url"
+            :alt="image.altText || product.title"
+            class="aspect-square h-full w-full object-cover object-center"
+          />
+        </button>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -33,7 +44,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-
 
 const props = defineProps({
   product: {

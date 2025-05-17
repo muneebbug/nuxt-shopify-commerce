@@ -1,105 +1,122 @@
 <template>
   <Sheet v-model:open="isOpened">
-    <SheetContent side="right" class="max-w-full w-[600px] flex flex-col p-0">
-      <SheetHeader class="mb-4 p-6 pb-0">
-        <SheetTitle>
-          Shopping cart
-        </SheetTitle>
-      </SheetHeader>
-      <ScrollArea class="h-full px-6" v-if="items && items.length > 0">
-        <div class="drawer__cart-items-wrapper">
+    <SheetContent side="right" class="flex w-full max-w-md flex-col p-0">
+      <div class="flex items-center justify-between border-b px-6 py-4">
+        <SheetTitle class="text-lg font-medium">Shopping Cart</SheetTitle>
+        <SheetClose class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+          <Icon name="lucide:x" class="h-4 w-4" />
+          <span class="sr-only">Close</span>
+        </SheetClose>
+      </div>
 
+      <div class="flex-1 overflow-y-auto">
+        <!-- Items in cart -->
+        <div v-if="items && items.length > 0" class="flex flex-col gap-4 p-6">
           <div
-            class="drawer__cart-item relative border border-border border-opacity-20 rounded-large mb-8 overflow-hidden"
-            v-for="item in items" :key="item.id">
+            v-for="item in items"
+            :key="item.id"
+            class="relative flex items-start gap-4 rounded-md border p-4"
+          >
             <div v-if="loadingStates[item.merchandise.id]"
-              class="loading-spinner absolute top-0 left-0 right-0 bottom-0 w-full h-full flex items-center justify-center bg-white z-10 opacity-90">
-              <Icon name="local:button-loader" size="24" class="w-[18px]" />
+              class="absolute inset-0 z-10 flex items-center justify-center rounded-md bg-background/80">
+              <Icon name="local:button-loader" class="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
 
-            <div class="cart-item__media relative">
-              <NuxtLink :onclick="close"
-                class="cart-item__media-link block absolute bottom-0 left-0 right-0 top-0 w-full h-full"
-                :to="`/product/${item.merchandise?.product?.handle}`">
-              </NuxtLink>
-              <img class="rounded-medium" :src="item.merchandise?.product?.featuredImage?.url"
-                :alt="item.merchandise?.product?.title" />
-            </div>
-            <div class="cart-item__details">
-              <NuxtLink :onclick="close" :to="`/product/${item.merchandise?.product?.handle}`" class="h6">
-                {{ item.merchandise?.product?.title }}
-              </NuxtLink>
-              <dl class="mt-2">
-                <div class="product-options">
-                  <span v-for="(option, index) in item.merchandise.selectedOptions" :key="option.value">
-                    <!-- slash will be added if there are more options -->
-                    {{ option.value }} {{ item.merchandise.selectedOptions.length > index + 1 ? '/' : '' }}
-                  </span>
+            <!-- Product Image -->
+            <NuxtLink
+              :to="`/product/${item.merchandise?.product?.handle}`"
+              @click="close"
+              class="h-16 w-16 flex-none overflow-hidden rounded-md border bg-background"
+            >
+              <img
+                :src="item.merchandise?.product?.featuredImage?.url"
+                :alt="item.merchandise?.product?.title"
+                class="h-full w-full object-cover object-center"
+              />
+            </NuxtLink>
+
+            <!-- Product Details -->
+            <div class="flex-1 space-y-1">
+              <div class="flex justify-between">
+                <NuxtLink
+                  :to="`/product/${item.merchandise?.product?.handle}`"
+                  @click="close"
+                  class="line-clamp-1 text-sm font-medium"
+                >
+                  {{ item.merchandise?.product?.title }}
+                </NuxtLink>
+                <div class="text-sm font-medium">${{ item.cost.totalAmount.amount }}</div>
+              </div>
+
+              <div class="text-xs text-muted-foreground">
+                <span v-for="(option, index) in item.merchandise.selectedOptions" :key="option.value">
+                  {{ option.value }}{{ item.merchandise.selectedOptions.length > index + 1 ? ' / ' : '' }}
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <div class="w-24">
+                  <NumberField
+                    :default-value="1"
+                    :min="0"
+                    v-model="item.quantity"
+                    @update:model-value="updateItemLocal({ merchandiseId: item.merchandise?.id, quantity: item.quantity })"
+                  >
+                    <NumberFieldContent>
+                      <NumberFieldDecrement />
+                      <NumberFieldInput />
+                      <NumberFieldIncrement />
+                    </NumberFieldContent>
+                  </NumberField>
                 </div>
-              </dl>
-              <div class="cart_price_items mt-2 font-bold text-[22px]">
-                ${{ item.cost.totalAmount.amount }}
-              </div>
-            </div>
-            <div class="cart-item__quantity flex flex-col justify-center items-center">
-              <div class="quantity-input mb-4">
-                <NumberField id="age" :default-value="1" :min="0" v-model="item.quantity"
-                  @update:model-value="updateItemLocal({ merchandiseId: item.merchandise?.id, quantity: item.quantity })">
-                  <NumberFieldContent>
-                    <NumberFieldDecrement />
-                    <NumberFieldInput />
-                    <NumberFieldIncrement />
-                  </NumberFieldContent>
-                </NumberField>
-              </div>
 
-              <button @click="removeItemLocal(null, item?.merchandise?.id)"
-                class="text-center font-bold underline text-destructive">
-                Remove
-              </button>
+                <button
+                  @click="removeItemLocal(null, item?.merchandise?.id)"
+                  class="text-xs text-muted-foreground underline-offset-4 hover:text-destructive hover:underline"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </ScrollArea>
-      <!-- Empty Cart -->
-      <div class="cart-empty px-6" v-else>
-        <div
-          class="cart-empty__wrapper border border-border border-opacity-20 rounded-large p-12 flex flex-col items-center justify-center">
-          <div class="empty-icon mb-2">
-            <Icon name="ph:shopping-cart-simple-light" size="60" />
+
+        <!-- Empty cart state -->
+        <div v-else class="flex min-h-[200px] flex-col items-center justify-center p-6">
+          <div class="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+            <Icon name="ph:shopping-cart-simple-light" class="h-10 w-10 text-muted-foreground" />
           </div>
-          <div class="empty-text mb-8">
-            <h1 class="h4">
-              Your cart is empty
-            </h1>
-          </div>
-          <div class="empty-button">
-            <Button to="/">
-              Continue Shopping
-            </Button>
-          </div>
+          <h3 class="mt-4 text-lg font-medium">Your cart is empty</h3>
+          <p class="mt-2 text-center text-sm text-muted-foreground">
+            Add items to your cart to get started
+          </p>
+          <Button @click="close" to="/" class="mt-4">
+            Continue Shopping
+          </Button>
         </div>
       </div>
 
-      <div v-if="items && items.length > 0"
-        class="cart-footer flex flex-col gap-6 justify-center items-center p-6 shadow shadow-slate-300">
-        <div
-          class="cart_totals_box p-6 w-full rounded-medium border border-border border-opacity-20 text-white bg-foreground">
-          <div class="totals flex w-full justify-between">
-            <h2 class="totals__total h3">Total</h2>
-            <p class="totals__total-value h3">
-              ${{ cart?.cost?.totalAmount?.amount }}
-            </p>
+      <!-- Cart footer -->
+      <div v-if="items && items.length > 0" class="border-t p-6">
+        <dl class="space-y-2">
+          <div class="flex items-center justify-between">
+            <dt class="text-sm text-muted-foreground">Subtotal</dt>
+            <dd class="text-sm font-medium">${{ formatNumber(cart?.cost?.subtotalAmount?.amount || 0) }}</dd>
           </div>
-        </div>
-        <Button class="w-full" @click="redirectToCheckout">
+          <div class="flex items-center justify-between">
+            <dt class="text-sm text-muted-foreground">Tax</dt>
+            <dd class="text-sm font-medium">${{ formatNumber(cart?.cost?.totalTaxAmount?.amount || 0) }}</dd>
+          </div>
+          <div class="flex items-center justify-between border-t border-dashed pt-2">
+            <dt class="text-base font-medium">Total</dt>
+            <dd class="text-base font-medium">${{ formatNumber(cart?.cost?.totalAmount?.amount || 0) }}</dd>
+          </div>
+        </dl>
+        <Button @click="redirectToCheckout" class="mt-4 w-full">
           Checkout
         </Button>
       </div>
-
-
     </SheetContent>
-
   </Sheet>
 </template>
 
@@ -107,6 +124,7 @@
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -122,7 +140,6 @@ import {
 } from '@/components/ui/number-field'
 
 import type { Cart } from '~/lib/shopify/types';
-import ScrollArea from '../ui/scroll-area/ScrollArea.vue';
 
 const { isOpened } = useCartDrawer()
 const cart = computed<Cart | undefined>(() => useCartStore().cart);
@@ -148,6 +165,11 @@ const removeItemLocal = async (prevState: any, itemId: string) => {
   loadingStates.value[itemId] = true;
   await removeItem(null, itemId);
   loadingStates.value[itemId] = false;
+};
+
+// Format number to always show two decimal places
+const formatNumber = (num: number | string) => {
+  return parseFloat(num.toString()).toFixed(2);
 };
 
 nuxtApp.hook('page:start', () => {

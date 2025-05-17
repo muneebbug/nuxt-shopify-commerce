@@ -1,21 +1,28 @@
 <template>
-  <Section title="Shop by goal">
-    <SectionHeader title="Shop by goal" :centered="true" />
-    <div class="section-content__wrapper">
-      <ul
-        class="collection-list grid grid-cols-1 md:grid-cols-3 mb-8 p-0 list-none gap-x-mobile-horizontal gap-y-mobile-vertical sm:gap-x-horizontal sm:gap-y-vertical">
-        <ShopifyCollectionItem v-for="collection in collections.slice(0, 3)" :key="collection.id"
-          :collection="collection" />
-      </ul>
+  <Section className="py-10 md:py-16">
+    <SectionHeader
+      title="Shop by Category"
+      description="Browse our featured collections"
+      centered
+    />
+    <div class="mt-8 md:mt-10">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <ShopifyCollectionItem v-for="collection in collections.slice(0, 3)" :key="collection.id" :collection="collection" />
+      </div>
+      <div class="mt-10 flex justify-center">
+        <NuxtLink to="/collection">
+          <Button variant="outline">View all categories</Button>
+        </NuxtLink>
+      </div>
     </div>
   </Section>
 </template>
 
 <script setup>
+import { Button } from '@/components/ui/button'
 const { getCollections } = useShopify();
 
 const collections = await getCollections();
-
 </script>
 
 <style></style>

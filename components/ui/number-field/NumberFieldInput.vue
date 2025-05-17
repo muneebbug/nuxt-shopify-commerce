@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { NumberFieldInput } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
+import { NumberFieldInput } from 'reka-ui'
 
 const props = defineProps<{
   class?: HTMLAttributes['class']
@@ -9,20 +9,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <NumberFieldInput data-slot="input"
-    :class="cn('flex w-full font-medium min-w-16 py-0 px-2 rounded-medium border border-border border-opacity-20 bg-background text-center ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50', props.class)" />
+  <NumberFieldInput
+    data-slot="input"
+    :class="cn('flex h-9 w-full rounded-md border border-input bg-transparent py-1 text-sm text-center shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50', props.class)"
+  />
 </template>
-
-<style scoped lang="scss">
-input {
-  min-height: 5rem;
-
-  @media screen and (max-width: 749px) {
-    min-height: 50px;
-  }
-
-  @media screen and (min-width: 989px) {
-    min-height: 5.6rem;
-  }
-}
-</style>
