@@ -42,7 +42,7 @@ const buttonBg = computed(() => {
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class)"
     :disabled="props.loading"
-    class="cursor-pointer relative"
+    class="cursor-pointer"
   >
     <!-- span bg should be exactly same as  button bg based on variant -->
     <span

@@ -1,29 +1,29 @@
 <template>
   <div>
-    <Carousel class="w-full">
+    <Carousel class="w-full" ref="carousel">
       <CarouselContent>
-        <CarouselItem v-for="image in product?.images" :key="image.id">
+        <CarouselItem v-for="(image, index) in product?.images" :key="index" :opts="{prevNext: false}">
           <div class="overflow-hidden rounded-lg border bg-background">
             <img
               :src="image.url"
               :alt="image.altText || product.title"
-              class="aspect-square w-full object-cover object-center transition-all duration-300 hover:scale-105"
+              class="w-full object-cover object-center transition-all duration-300 hover:scale-105"
             />
           </div>
         </CarouselItem>
       </CarouselContent>
-      <div class="flex items-center justify-center gap-2 py-2">
-        <CarouselPrevious variant="outline" size="sm" class="h-8 w-8" />
-        <CarouselNext variant="outline" size="sm" class="h-8 w-8" />
-      </div>
+        <CarouselPrevious variant="outline" size="sm" class="absolute top-1/2 left-2 -translate-y-1/2" />
+        <CarouselNext variant="outline" size="sm" class="absolute top-1/2 right-2 -translate-y-1/2" />
     </Carousel>
 
-    <div class="mt-6 hidden md:block">
+    <div class="mt-4 hidden md:block">
       <div class="grid grid-cols-4 gap-4">
         <button
           v-for="(image, i) in product?.images.slice(0, 4)"
           :key="i"
-          class="cursor-pointer overflow-hidden rounded-md border bg-background hover:border-primary"
+          class="cursor-pointer overflow-hidden rounded-md border bg-background"
+          :class="{ 'border-primary': currentIndex === i, 'hover:border-primary': currentIndex !== i }"
+          @click="selectImage(i)"
         >
           <img
             :src="image.url"
@@ -44,6 +44,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import { ref, onMounted, watch, type UnwrapRef } from 'vue'
+import type { UnwrapRefCarouselApi } from '@/components/ui/carousel/interface'
 
 const props = defineProps({
   product: {
@@ -54,9 +56,33 @@ const props = defineProps({
 
 const { product } = props;
 
-// Computed properties for the product details : not deleting it for now until i have tested the carousel properly
-// const productPreviewImage = computed(() => product?.images[0]?.url);
-// const ratio = computed(() => product?.images[0]?.width / product?.images[0]?.height);
+const carousel = ref<InstanceType<typeof Carousel> | null>(null);
+const carouselApi = ref<UnwrapRef<UnwrapRefCarouselApi> | null>(null);
+const currentIndex = ref(0);
+
+// Function to select a specific image
+function selectImage(index: number) {
+  if (carouselApi.value && index >= 0 && index < (product?.images?.length || 0)) {
+    carouselApi.value.scrollTo(index);
+    currentIndex.value = index;
+  }
+}
+
+// Initialize the carousel API when component is mounted
+onMounted(() => {
+  if (carousel.value) {
+    watch(() => carousel.value?.carouselApi, (api) => {
+      if (api) {
+        carouselApi.value = api;
+
+        // Listen for slide changes to update the currentIndex
+        api.on('select', () => {
+          currentIndex.value = api.selectedScrollSnap();
+        });
+      }
+    }, { immediate: true });
+  }
+});
 
 </script>
 
