@@ -34,7 +34,7 @@
 
       --page-width: 160rem;
     }
-
+/*
     ::-webkit-scrollbar-corner {
       background: none;
     }
@@ -58,12 +58,8 @@
       width: 3px;
       height: 3px;
     }
+ */
 
-    .overflow-scrollbar::-webkit-scrollbar-thumb {
-      background: rgb(var(--color-scrollbar));
-      border-radius: 5px;
-      border: 0;
-    }
 
     html {
       height: 100%;

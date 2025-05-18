@@ -1,12 +1,13 @@
 <template>
   <div ref="searchTarget" class="relative w-full max-w-sm">
-    <form @submit.prevent="search" class="relative">
+    <form @submit.prevent="performFullSearch"
+      class="relative">
       <Input v-model="query" @keyup="search" @input="search" @focus="open" type="search"
         placeholder="Search products..." class="w-full rounded-md pr-10" />
-      <button type="submit"
+      <Button type="submit"
         class="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground">
         <Icon name="ph:magnifying-glass" class="h-4 w-4" />
-      </button>
+      </Button>
     </form>
 
     <HeadlessPopover v-slot="{ open }">
@@ -25,7 +26,8 @@
             <div v-if="results && results?.totalCount <= 0 && !isSearching && query"
               class="rounded-md border p-4 text-center mb-2">
               <p class="text-sm font-medium">No results found</p>
-              <NuxtLink :to="`/search/q=${query}`" class="mt-2 text-sm text-primary hover:underline">
+              <NuxtLink :to="`/search?q=${encodeURIComponent(query)}`"
+                class="mt-2 text-sm text-primary hover:underline">
                 Search for "{{ query }}"
               </NuxtLink>
             </div>
@@ -132,8 +134,14 @@ const search = useDebounceFn(async () => {
     results.value = undefined;
     return;
   }
-  results.value = await performSearch(query?.value);
+  results.value = await performSearch(query?.value, 'predictive');
 }, 250);
+
+const performFullSearch = () => {
+  navigateTo(`/search?q=${encodeURIComponent(query.value)}`);
+  isSearchOpened.value = false;
+  query.value = '';
+}
 
 // Replace the current query with the suggested query
 const replaceQuery = (newQuery: string) => {
