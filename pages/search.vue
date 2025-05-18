@@ -134,6 +134,7 @@
 
 <script setup lang="ts">
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-vue-next';
 import type { SearchResults } from '~/lib/shopify/types';
 

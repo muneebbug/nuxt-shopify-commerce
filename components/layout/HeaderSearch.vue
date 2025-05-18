@@ -4,10 +4,10 @@
       class="relative">
       <Input v-model="query" @keyup="search" @input="search" @focus="open" type="search"
         placeholder="Search products..." class="w-full rounded-md pr-10" />
-      <Button type="submit"
+      <button type="submit"
         class="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground">
         <Icon name="ph:magnifying-glass" class="h-4 w-4" />
-      </Button>
+      </button>
     </form>
 
     <HeadlessPopover v-slot="{ open }">

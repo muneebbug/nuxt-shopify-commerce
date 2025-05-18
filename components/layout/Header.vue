@@ -26,6 +26,7 @@
         <Button @click="openMobileSearch" variant="ghost" size="icon" class="md:hidden">
           <Icon name="ph:magnifying-glass" class="h-5 w-5" />
         </Button>
+        <ThemeToggle />
         <Button @click="open" variant="ghost" size="icon" class="relative">
           <Icon name="ph:shopping-cart-simple-light" class="h-5 w-5" />
           <span v-if="totalQuantity > 0"
@@ -45,6 +46,7 @@
 
 <script lang="ts" setup>
 import { Button } from '@/components/ui/button'
+import ThemeToggle from '@/components/ui/ThemeToggle.vue';
 const cartStore = useCartStore();
 
 const totalAmount = computed(() => cartStore.cart?.cost?.totalAmount?.amount || 0);
