@@ -1,7 +1,7 @@
 <template>
   <Section className="py-10 md:py-16">
     <SectionHeader
-      title="Shop by Category"
+      title="Shop by Collection"
       description="Browse our featured collections"
       centered
     />
@@ -10,9 +10,9 @@
         <ShopifyCollectionItem v-for="collection in collections.slice(0, 3)" :key="collection.id" :collection="collection" />
       </div>
       <div class="mt-10 flex justify-center">
-        <NuxtLink to="/collection">
-          <Button variant="outline">View all categories</Button>
-        </NuxtLink>
+
+          <Button to="/collection/all">View all products</Button>
+
       </div>
     </div>
   </Section>

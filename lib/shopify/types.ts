@@ -278,11 +278,19 @@ export type TSearchResultCollection = {
 export type TSearchResultPage = {
   id: string;
   title: string;
+  handle: string;
 }
+
+export type TSearchResultQueries = {
+  text: string;
+  styledText: string;
+}
+
 export type SearchResults = {
   products: TSearchResultProduct[];
   collections: TSearchResultCollection[];
   pages: TSearchResultPage[];
+  queries: TSearchResultQueries[];
   totalCount: number;
 };
 

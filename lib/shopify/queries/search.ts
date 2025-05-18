@@ -18,6 +18,11 @@ export const predictiveSearchQuery = /* GraphQL */ `
         pages {
           id
           title
+          handle
+        }
+        queries {
+          text
+          styledText
         }
     }
   }
