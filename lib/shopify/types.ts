@@ -6,6 +6,7 @@ export type Connection<T> = {
 
 export type Edge<T> = {
   node: T;
+  cursor: string;
 };
 
 export type Cart = Omit<ShopifyCart, 'lines'> & {
@@ -203,13 +204,20 @@ export type ShopifyCollectionOperation = {
 export type ShopifyCollectionProductsOperation = {
   data: {
     collection: {
-      products: Connection<ShopifyProduct>;
+      products: Connection<ShopifyProduct> & {
+        pageInfo: {
+          hasNextPage: boolean;
+          endCursor: string;
+        }
+      };
     };
   };
   variables: {
     handle: string;
     reverse?: boolean;
     sortKey?: string;
+    first?: number;
+    after?: string;
   };
 };
 
@@ -302,8 +310,6 @@ export type predictiveSearchOperation = {
     query: string
   };
 }
-
-
 
 export type ShopifyProductsOperation = {
   data: {

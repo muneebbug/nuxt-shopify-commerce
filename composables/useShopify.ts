@@ -290,28 +290,37 @@ export function useShopify() {
   async function getCollectionProducts({
     collection,
     reverse,
-    sortKey
+    sortKey,
+    first = 12,
+    after
   }: {
     collection: string;
     reverse?: boolean;
     sortKey?: string;
-  }): Promise<Product[]> {
+    first?: number;
+    after?: string;
+  }): Promise<{ products: Product[], pageInfo: { hasNextPage: boolean, endCursor: string } }> {
     const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
       query: getCollectionProductsQuery,
       tags: [TAGS.collections, TAGS.products],
       variables: {
         handle: collection,
         reverse,
-        sortKey: sortKey === 'CREATED_AT' ? 'CREATED' : sortKey
+        sortKey: sortKey === 'CREATED_AT' ? 'CREATED' : sortKey,
+        first,
+        after
       }
     });
 
     if (!res.body.data.collection) {
       console.log(`No collection found for \`${collection}\``);
-      return [];
+      return { products: [], pageInfo: { hasNextPage: false, endCursor: '' } };
     }
 
-    return reshapeProducts(removeEdgesAndNodes(res.body.data.collection.products));
+    return {
+      products: reshapeProducts(removeEdgesAndNodes(res.body.data.collection.products)),
+      pageInfo: res.body.data.collection.products.pageInfo
+    };
   }
 
 
