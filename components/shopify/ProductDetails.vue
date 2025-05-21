@@ -52,7 +52,7 @@
               </NumberFieldContent>
             </NumberField>
           </div>
-          <Button class="flex-1" size="lg" :loading="loading" :disabled="quantity <= 0" @click="addToCart">
+          <Button class="flex-1":loading="loading" :disabled="quantity <= 0" @click="addToCart">
             Add to Cart
           </Button>
         </div>

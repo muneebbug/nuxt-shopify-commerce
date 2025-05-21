@@ -84,26 +84,45 @@ A Nuxt 3 starter template for creating a custom frontend with Shopify's Storefro
 ## To-Do
 
 - [X] Nuxt 3
-- [X] Shopify Storefront API Client
+- [X] Shopify Storefront API GraphQL Client
 - [X] Tailwind CSS
-- [X] Sass
 - [X] Headless UI
 - [X] ShadCN Nuxt
-- [X] Adding Pinia
-  - [X] auto import folder "stores"
+- [X] Pinia
+- [X] 🌙 Theme Switcher (light, dark, system)
 - [ ] Eslint & Prettier
-- [ ] 🌙 Theme Switcher (light, dark, system)
+- [ ] Caching
+- [ ] SEO
+- [ ] Accessibility
+- [ ] Internationalization
+- [ ] Testing
 - [ ] 🇮🇩 Language Switcher
-- [X] Pages
+- [ ] Ecommerce Features
+  - [X] Header Predictive Search
+  - [X] Cart Drawer
+  - [X] Product Details
+  - [X] Collection List
+  - [X] Product List
+  - [X] Product Card
+  - [X] Cart Drawer
+  - [X] Infinite Scroll for collection pages
+- [ ] Pages
   - [X] Home
   - [X] Collection
   - [X] Product
+  - [ ] Search
   - [ ] Cart
-  - [ ] Blog
-    - [ ] Article
+  - [ ] Wishlist
+- [ ] Account
+  - [X] Login
+  - [X] Register
+  - [X] Reset Password
+  - [X] Account Page
+  - [ ] Addresses
+  - [ ] Orders
 - [X] 📦 Components
     - [X] Ecommerce Components
-        - [ ] Hero
+        - [X] Hero
         - [X] Collection List
         - [X] Product List
         - [X] Product Card

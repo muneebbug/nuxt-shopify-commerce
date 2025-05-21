@@ -12,7 +12,8 @@
           <NuxtLink to="/" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Home
           </NuxtLink>
-          <NuxtLink to="/collection/all" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <NuxtLink to="/collection/all"
+            class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Shop
           </NuxtLink>
         </nav>
@@ -21,12 +22,46 @@
       <div class="hidden md:block max-w-xs w-full mx-4 ml-auto">
         <LayoutHeaderSearch :searchPopoverMaxHeight="searchPopoverMaxHeight" />
       </div>
-
-      <div class="flex items-center gap-4">
+      <div class="flex items-center">
         <Button @click="openMobileSearch" variant="ghost" size="icon" class="md:hidden">
           <Icon name="ph:magnifying-glass" class="h-5 w-5" />
         </Button>
         <ThemeToggle />
+
+        <!-- Account Menu -->
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <Button variant="ghost" size="icon">
+              <Icon name="heroicons:user-circle" class="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" class="w-48">
+            <div v-if="isAuthenticated">
+              <DropdownMenuItem as-child>
+                <NuxtLink to="/account" class="flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none">
+                  My Account
+                </NuxtLink>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem @click="logout" class="text-red-500">
+                Sign Out
+              </DropdownMenuItem>
+            </div>
+            <div v-else>
+              <DropdownMenuItem as-child>
+                <NuxtLink to="/login" class="flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none">
+                  Sign In
+                </NuxtLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem as-child>
+                <NuxtLink to="/register" class="flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none">
+                  Create Account
+                </NuxtLink>
+              </DropdownMenuItem>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <Button @click="open" variant="ghost" size="icon" class="relative">
           <Icon name="ph:shopping-cart-simple-light" class="h-5 w-5" />
           <span v-if="totalQuantity > 0"
@@ -46,8 +81,17 @@
 
 <script lang="ts" setup>
 import { Button } from '@/components/ui/button'
-import ThemeToggle from '@/components/ui/ThemeToggle.vue';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
+} from '@/components/ui/dropdown-menu';
+
 const cartStore = useCartStore();
+const { isAuthenticated, logout } = useAuth();
 
 const totalAmount = computed(() => cartStore.cart?.cost?.totalAmount?.amount || 0);
 const totalQuantity = computed(() => cartStore.cart?.totalQuantity || 0);
@@ -67,6 +111,7 @@ const headerHeight = computed(() => header.value?.getBoundingClientRect().bottom
 const searchPopoverMaxHeight = computed(() => {
   return windowHeight.value - headerHeight.value;
 })
+
 </script>
 
 <style lang="scss">

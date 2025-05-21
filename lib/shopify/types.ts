@@ -321,3 +321,96 @@ export type ShopifyProductsOperation = {
     sortKey?: string;
   };
 };
+
+export type ShopifySignInWithEmailAndPasswordOperation = {
+  data: {
+    customerAccessTokenCreate: {
+      customerAccessToken: {
+        accessToken: string;
+        expiresAt: string;
+      };
+      customerUserErrors: {
+        code: string;
+        message: string;
+      }[];
+    }
+  };
+  variables: {
+    email: string;
+    password: string;
+  };
+};
+
+export type ShopifyRegisterAccountOperation = {
+  data: {
+    customerCreate: {
+      customer: Customer;
+      customerUserErrors: {
+        code: string;
+        message: string;
+      }[];
+    };
+  };
+  variables: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    acceptsMarketing: boolean;
+  };
+};
+
+export type ShopifyCustomerRecoverOperation = {
+  data: {
+    customerRecover: {
+      customerUserErrors: {
+        code: string;
+        message: string;
+      }[];
+    };
+  };
+  variables: {
+    email: string;
+  };
+};
+
+export type CustomerAddress = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  company: string;
+  address1: string;
+  address2: string;
+  city: string;
+  province: string;
+  country: string;
+  zip: string;
+  phone: string;
+}
+
+export type ShopifyCustomer = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  displayName: string;
+  acceptsMarketing: boolean;
+  createdAt: string;
+  numberOfOrders: number;
+  defaultAddress: CustomerAddress;
+  addresses: Connection<CustomerAddress>;
+}
+
+export type Customer = Omit<ShopifyCustomer, 'addresses'> & {
+  addresses: CustomerAddress[];
+}
+
+export type ShopifyCustomerOperation = {
+  data: {
+    customer: Customer;
+  };
+  variables: {
+    customerAccessToken: string;
+  };
+};

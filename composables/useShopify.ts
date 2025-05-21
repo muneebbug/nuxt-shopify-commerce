@@ -50,8 +50,16 @@ import type {
   predictiveSearchOperation,
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
-  ShopifyUpdateCartOperation
+  ShopifyUpdateCartOperation,
+  ShopifySignInWithEmailAndPasswordOperation,
+  ShopifyRegisterAccountOperation,
+  Customer,
+  ShopifyCustomerOperation,
+  ShopifyCustomer,
+  ShopifyCustomerRecoverOperation
 } from '@/lib/shopify/types';
+import { customerRecoverMutation, registerAccountMutation, signInWithEmailAndPasswordMutation } from '@/lib/shopify/mutations/customer';
+import { getCustomerQuery } from '@/lib/shopify/queries/customer';
 
 export function useShopify() {
   const { storeDomain, publicAccessToken } = useRuntimeConfig().public;
@@ -443,6 +451,64 @@ async function performPredictiveSearch({
   return removeEdgesAndNodes(res.body.data.pages);
 }
 
+  async function signInWithEmailAndPassword(data: {
+    email: string,
+    password: string
+  }) {
+    const res = await shopifyFetch<ShopifySignInWithEmailAndPasswordOperation>({
+      query: signInWithEmailAndPasswordMutation,
+      variables: data
+    });
+
+    return res.body.data.customerAccessTokenCreate
+  }
+
+  const reshapeCustomer = (customer: ShopifyCustomer) : Customer => {
+    return {
+      ...customer,
+      addresses: removeEdgesAndNodes(customer.addresses)
+    };
+  }
+
+  async function registerAccount(data: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    acceptsMarketing: boolean;
+  })
+    : Promise<{
+      customer: Customer;
+      customerUserErrors: {
+        code: string;
+        message: string;
+      }[];
+  }> {
+    const res = await shopifyFetch<ShopifyRegisterAccountOperation>({
+      query: registerAccountMutation,
+      variables: data
+    });
+
+    return res.body.data.customerCreate;
+  }
+
+  async function customerRecover(email: string) {
+    const res = await shopifyFetch<ShopifyCustomerRecoverOperation>({
+      query: customerRecoverMutation,
+      variables: { email }
+    });
+
+    return res.body.data.customerRecover;
+  }
+
+  async function getCustomer(customerAccessToken: string) {
+    const res = await shopifyFetch<ShopifyCustomerOperation>({
+      query: getCustomerQuery,
+      variables: { customerAccessToken }
+    });
+
+    return res.body.data.customer;
+  }
 
   return {
     createCart,
@@ -460,6 +526,10 @@ async function performPredictiveSearch({
     getMenu,
     getPage,
     getPages,
-    reshapeShopifyId
+    reshapeShopifyId,
+    signInWithEmailAndPassword,
+    registerAccount,
+    getCustomer,
+    customerRecover
   };
 }

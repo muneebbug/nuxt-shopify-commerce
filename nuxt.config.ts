@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     'nuxt-headlessui',
     '@nuxtjs/color-mode',
     '@nuxt/icon',
+    '@vee-validate/nuxt',
   ],
   alias: {
     '@': resolve('./'),
@@ -72,11 +73,24 @@ export default defineNuxtConfig({
     }
   },
 
-  devtools: { enabled: true },
+  // devtools: { enabled: true },
 
   devServer: {
     port: 3000,
     host: '127.0.0.1'
+  },
+
+  // Minimize memory leaks in development
+  nitro: {
+    devStorage: {
+      db: {
+        driver: 'memory' // Use in-memory storage during development
+      }
+    }
+  },
+
+  experimental: {
+    componentIslands: false, // Can help reduce memory usage
   },
   vite: {
     plugins: [
