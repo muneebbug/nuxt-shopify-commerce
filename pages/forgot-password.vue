@@ -15,6 +15,7 @@
                 <FormControl>
                   <Input type="email" placeholder="Enter your email" v-bind="componentField" />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             </FormField>
 
@@ -53,15 +54,12 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-import { toast } from 'vue-sonner'
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -84,25 +82,22 @@ definePageMeta({
 
 const email = ref('');
 const isLoading = ref(false);
-const error = ref('');
-const success = ref('');
+const error = ref<string | undefined>(undefined);
+const success = ref<string | undefined>(undefined);
 
 const onSubmit = handleSubmit(async (formData) => {
   isLoading.value = true;
+  error.value = '';
+  success.value = '';
 
-  try {
-    const res = await forgotPassword(formData.email);
+  const res = await forgotPassword(formData.email);
 
-    if (res.success) {
-      error.value = '';
-      success.value = 'Email sent successfully';
-    } else {
-      error.value = res.error;
-    }
-  } catch (e: any) {
-    error.value = e.error.message;
-  } finally {
-    isLoading.value = false;
+  if (res.success) {
+    success.value = 'Email sent successfully';
+  } else {
+    error.value = res.error;
   }
+
+  isLoading.value = false;
 });
 </script>

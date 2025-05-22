@@ -1,14 +1,33 @@
-
 import { toast } from 'vue-sonner'
+
+// Define a type for authentication responses
+type AuthResponse = {
+  success: boolean;
+  error?: string;
+};
 
 export function useAuth() {
   const authStore = useAuthStore();
   const { signInWithEmailAndPassword, registerAccount, getCustomer, customerRecover } = useShopify();
 
+  // Centralized error handling method
+  const handleAuthResult = (res: any): AuthResponse => {
+    // Check for customerUserErrors from Shopify responses
+    if (res.customerUserErrors && res.customerUserErrors.length > 0) {
+      const error = res.customerUserErrors[0];
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+
+    return { success: true };
+  };
+
   const login = async (formData:
     {
       email: string, password: string
-    }) => {
+    }): Promise<AuthResponse> => {
     try {
       const res = await signInWithEmailAndPassword(formData);
 
@@ -23,17 +42,12 @@ export function useAuth() {
         return { success: true };
       }
 
-      if (res.customerUserErrors.length > 0) {
-        const error = res.customerUserErrors[0];
-        return {
-          success: false,
-          error: error.message
-        }
-      }
+      // Handle customerUserErrors from Shopify
+      return handleAuthResult(res);
     } catch (e: any) {
       return {
         success: false,
-        error: e.error.message || 'An error occurred during login'
+        error: e.error?.message || 'An error occurred during login'
       };
     }
   };
@@ -43,8 +57,8 @@ export function useAuth() {
     password: string,
     firstName: string,
     lastName: string,
-    acceptsMarketing: boolean
-  }) => {
+    acceptsMarketing: boolean,
+  }): Promise<AuthResponse> => {
     try {
       const res = await registerAccount(userData);
 
@@ -58,18 +72,13 @@ export function useAuth() {
         });
       }
 
-      if (res.customerUserErrors.length > 0) {
-        const error = res.customerUserErrors[0];
-        return {
-          success: false,
-          error: error.message
-        }
-      }
+      // Handle customerUserErrors from Shopify
+      return handleAuthResult(res);
 
     } catch (e: any) {
       return {
         success: false,
-        error: e.error.message || 'An error occurred during registration'
+        error: e.error?.message || 'An error occurred during registration'
       };
     }
   };
@@ -93,25 +102,16 @@ export function useAuth() {
     }
   };
 
-  const forgotPassword = async (email: string) => {
+  const forgotPassword = async (email: string): Promise<AuthResponse> => {
     try {
       const res = await customerRecover(email);
 
-      if (res.customerUserErrors.length > 0) {
-        const error = res.customerUserErrors[0];
-        return {
-          success: false,
-          error: error.message
-        }
-      }
-
-      return {
-        success: true
-      }
+      // Handle customerUserErrors from Shopify
+      return handleAuthResult(res);
     } catch (e: any) {
       return {
         success: false,
-        error: e.error.message || 'Something went wrong. Please try again.'
+        error: e.error?.message || 'Something went wrong. Please try again.'
       }
     }
   };
@@ -129,7 +129,7 @@ export function useAuth() {
       return false;
     }
 
-    // Check token expiry
+
     if (authStore.expiresAt && new Date(authStore.expiresAt) < new Date()) {
       authStore.logout();
       return false;

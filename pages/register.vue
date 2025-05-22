@@ -111,7 +111,7 @@ definePageMeta({
 
 const { register } = useAuth();
 const isLoading = ref(false);
-const error = ref('');
+const error = ref<string | undefined>(undefined);
 
 const registerFormSchema = toTypedSchema(z.object({
   firstName: z.string().min(2, { message: 'First name must be at least 2 characters' }).max(50, { message: 'First name must be less than 50 characters' }),
@@ -134,19 +134,17 @@ const { handleSubmit } = useForm({
 
 const onSubmit = handleSubmit(async (formData) => {
   isLoading.value = true;
-  try {
-    const res = await register(formData);
+  error.value = '';
 
-    if (res?.success) {
-      toast('Account created successfully');
-      navigateTo('/account');
-    } else {
-      error.value = res?.error;
-    }
-  } catch (err: any) {
-    error.value = err.message;
-  } finally {
-    isLoading.value = false;
+  const res = await register(formData);
+
+  if (res?.success) {
+    toast('Account created successfully');
+    navigateTo('/account');
+  } else {
+    error.value = res?.error;
   }
+
+  isLoading.value = false;
 })
 </script>

@@ -66,11 +66,8 @@ import { toast } from 'vue-sonner'
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -98,28 +95,24 @@ const { login } = useAuth();
 
 
 const isLoading = ref(false);
-const error = ref('');
+const error = ref<string | undefined>(undefined);
 
 const onSubmit = handleSubmit(async (formData) => {
   error.value = '';
   isLoading.value = true;
 
-  try {
-    const res = await login(formData);
+  const res = await login(formData);
 
-    if (res?.success) {
-      toast('Logged in successfully');
+  if (res?.success) {
+    toast('Logged in successfully');
 
-      // Redirect to the original page or account page
-      const redirectPath = route.query.redirect as string || '/account';
-      router.push(redirectPath);
-    } else {
-      error.value = res?.error;
-    }
-  } catch (err: any) {
-    error.value = err.message;
-  } finally {
-    isLoading.value = false;
+    // Redirect to the original page or account page
+    const redirectPath = route.query.redirect as string || '/account';
+    router.push(redirectPath);
+  } else {
+    error.value = res?.error;
   }
+
+  isLoading.value = false;
 });
 </script>
