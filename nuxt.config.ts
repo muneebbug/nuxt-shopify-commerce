@@ -5,9 +5,6 @@ import tailwindcss from '@tailwindcss/vite'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
-  },
   modules: [
     '@pinia/nuxt',
     '@formkit/auto-animate',
@@ -47,12 +44,12 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-    dirs: [resolve('./stores'), '~/stores'],
+    dirs: [resolve('./stores')],
   },
 
   // module::pinia
   pinia: {
-    storesDirs: ['~/stores/**', '#/stores/**', '@/stores/**'],
+    storesDirs: [resolve('./stores/**')],
   },
 
   // module::headlessui
@@ -80,18 +77,8 @@ export default defineNuxtConfig({
     host: '127.0.0.1'
   },
 
-  // Minimize memory leaks in development
-  nitro: {
-    devStorage: {
-      db: {
-        driver: 'memory' // Use in-memory storage during development
-      }
-    }
-  },
 
-  experimental: {
-    componentIslands: false, // Can help reduce memory usage
-  },
+
   vite: {
     plugins: [
       tailwindcss(),
