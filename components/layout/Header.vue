@@ -6,13 +6,14 @@
           <Icon name="ic:baseline-menu" class="h-5 w-5" />
         </Button>
         <NuxtLink to="/" class="flex items-center">
-          <img src="/fuel-logo.png" alt="logo" class="h-8 w-auto" />
+          <img src="/fuel-logo.png" alt="logo" class="h-8 w-auto" >
         </NuxtLink>
         <nav class="hidden md:flex items-center gap-6 ml-6">
           <NuxtLink to="/" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Home
           </NuxtLink>
-          <NuxtLink to="/collection/all"
+          <NuxtLink
+to="/collection/all"
             class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Shop
           </NuxtLink>
@@ -20,10 +21,10 @@
       </div>
 
       <div class="hidden md:block max-w-xs w-full mx-4 ml-auto">
-        <LayoutHeaderSearch :searchPopoverMaxHeight="searchPopoverMaxHeight" />
+        <LayoutHeaderSearch :search-popover-max-height="searchPopoverMaxHeight" />
       </div>
       <div class="flex items-center">
-        <Button @click="openMobileSearch" variant="ghost" size="icon" class="md:hidden">
+        <Button variant="ghost" size="icon" class="md:hidden" @click="openMobileSearch">
           <Icon name="ph:magnifying-glass" class="h-5 w-5" />
         </Button>
         <ThemeToggle />
@@ -43,7 +44,7 @@
                 </NuxtLink>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem @click="logout" class="text-red-500">
+              <DropdownMenuItem class="text-red-500" @click="logout">
                 Sign Out
               </DropdownMenuItem>
             </div>
@@ -62,9 +63,10 @@
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button @click="open" variant="ghost" size="icon" class="relative">
+        <Button variant="ghost" size="icon" class="relative" @click="open">
           <Icon name="ph:shopping-cart-simple-light" class="h-5 w-5" />
-          <span v-if="totalQuantity > 0"
+          <span
+v-if="totalQuantity > 0"
             class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
             {{ totalQuantity }}
           </span>
@@ -74,7 +76,7 @@
 
     <!-- Mobile search -->
     <div v-if="mobileSearchOpen" class="border-t py-3 px-4 md:hidden">
-      <LayoutHeaderSearch :searchPopoverMaxHeight="searchPopoverMaxHeight - 64" />
+      <LayoutHeaderSearch :search-popover-max-height="searchPopoverMaxHeight - 64" />
     </div>
   </header>
 </template>
@@ -93,10 +95,10 @@ import {
 const cartStore = useCartStore();
 const { isAuthenticated, logout } = useAuth();
 
-const totalAmount = computed(() => cartStore.cart?.cost?.totalAmount?.amount || 0);
+// const totalAmount = computed(() => cartStore.cart?.cost?.totalAmount?.amount || 0);
 const totalQuantity = computed(() => cartStore.cart?.totalQuantity || 0);
 
-const { open, close, isOpened } = useCartDrawer();
+const { open } = useCartDrawer();
 
 // Mobile search state
 const mobileSearchOpen = ref(false);

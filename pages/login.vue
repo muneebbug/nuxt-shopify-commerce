@@ -8,7 +8,7 @@
         </div>
 
         <div class="bg-card rounded-lg shadow-sm p-6 border">
-          <form @submit="onSubmit" class="space-y-4">
+          <form class="space-y-4" @submit="onSubmit">
             <FormField v-slot="{ componentField }" name="email">
               <FormItem>
                 <FormLabel>Email</FormLabel>
@@ -35,7 +35,8 @@
               </FormItem>
             </FormField>
 
-            <div v-if="error"
+            <div
+v-if="error"
               class="text-sm text-red-500 p-2 bg-red-50 dark:bg-red-950/30 rounded border border-red-200 dark:border-red-900">
               {{ error }}
             </div>
@@ -98,7 +99,7 @@ const isLoading = ref(false);
 const error = ref<string | undefined>(undefined);
 
 const onSubmit = handleSubmit(async (formData) => {
-  error.value = '';
+  error.value = undefined;
   isLoading.value = true;
 
   const res = await login(formData);

@@ -14,23 +14,27 @@
         <!-- Items in cart -->
         <div v-if="items && items.length > 0" class="flex flex-col gap-4 p-6">
           <div v-for="item in items" :key="item.id" class="relative flex items-start gap-4 rounded-md border p-4">
-            <div v-if="loadingStates[item.merchandise.id]"
+            <div
+v-if="loadingStates[item.merchandise.id]"
               class="absolute inset-0 z-10 flex items-center justify-center rounded-md bg-background/80">
               <Loader2 class="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
 
             <!-- Product Image -->
-            <NuxtLink :to="`/product/${item.merchandise?.product?.handle}`" @click="close"
-              class="h-16 w-16 flex-none overflow-hidden rounded-md border bg-background">
-              <img :src="item.merchandise?.product?.featuredImage?.url" :alt="item.merchandise?.product?.title"
-                class="h-full w-full object-cover object-center" />
+            <NuxtLink
+:to="`/product/${item.merchandise?.product?.handle}`" class="h-16 w-16 flex-none overflow-hidden rounded-md border bg-background"
+              @click="close">
+              <img
+:src="item.merchandise?.product?.featuredImage?.url" :alt="item.merchandise?.product?.title"
+                class="h-full w-full object-cover object-center" >
             </NuxtLink>
 
             <!-- Product Details -->
             <div class="flex-1 space-y-1">
               <div class="flex justify-between">
-                <NuxtLink :to="`/product/${item.merchandise?.product?.handle}`" @click="close"
-                  class="line-clamp-1 text-sm font-medium">
+                <NuxtLink
+:to="`/product/${item.merchandise?.product?.handle}`" class="line-clamp-1 text-sm font-medium"
+                  @click="close">
                   {{ item.merchandise?.product?.title }}
                 </NuxtLink>
                 <div class="text-sm font-medium">${{ item.cost.totalAmount.amount }}</div>
@@ -44,7 +48,8 @@
 
               <div class="flex items-center justify-between pt-2">
                 <div class="w-24">
-                  <NumberField :default-value="1" :min="0" v-model="item.quantity"
+                  <NumberField
+v-model="item.quantity" :default-value="1" :min="0"
                     @update:model-value="updateItemLocal({ merchandiseId: item.merchandise?.id, quantity: item.quantity })">
                     <NumberFieldContent>
                       <NumberFieldDecrement />
@@ -54,8 +59,9 @@
                   </NumberField>
                 </div>
 
-                <button @click="removeItemLocal(null, item?.merchandise?.id)"
-                  class="text-xs text-muted-foreground underline-offset-4 hover:text-destructive hover:underline">
+                <button
+class="text-xs text-muted-foreground underline-offset-4 hover:text-destructive hover:underline"
+                  @click="removeItemLocal(item?.merchandise?.id)">
                   Remove
                 </button>
               </div>
@@ -72,7 +78,7 @@
           <p class="mt-2 text-center text-sm text-muted-foreground">
             Add items to your cart to get started
           </p>
-          <Button @click="close" to="/" class="mt-4">
+          <Button to="/" class="mt-4" @click="close">
             Continue Shopping
           </Button>
         </div>
@@ -94,7 +100,7 @@
             <dd class="text-base font-medium">${{ formatNumber(cart?.cost?.totalAmount?.amount || 0) }}</dd>
           </div>
         </dl>
-        <Button @click="redirectToCheckout" class="mt-4 w-full">
+        <Button class="mt-4 w-full" @click="redirectToCheckout">
           Checkout
         </Button>
       </div>
@@ -108,10 +114,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@/components/ui/sheet'
 import {
   NumberField,
@@ -140,13 +143,13 @@ const updateItemLocal = async (payload: {
   quantity: number;
 }) => {
   loadingStates.value[payload.merchandiseId] = true;
-  await updateItemQuantity(null, payload);
+  await updateItemQuantity(payload);
   loadingStates.value[payload.merchandiseId] = false;
 }
 
-const removeItemLocal = async (prevState: any, itemId: string) => {
+const removeItemLocal = async (itemId: string) => {
   loadingStates.value[itemId] = true;
-  await removeItem(null, itemId);
+  await removeItem(itemId);
   loadingStates.value[itemId] = false;
 };
 

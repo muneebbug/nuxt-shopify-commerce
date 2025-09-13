@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Section className="py-10 md:py-16">
+    <Section class-name="py-10 md:py-16">
       <SectionHeader
         :title="`Search results for: ${query || 'All products'}`"
         centered
@@ -8,7 +8,7 @@
 
       <!-- Search bar -->
       <div class="max-w-md mx-auto mb-8">
-        <form @submit.prevent="submitSearch" class="relative">
+        <form class="relative" @submit.prevent="submitSearch">
           <Input
             v-model="searchInput"
             type="search"
@@ -79,7 +79,7 @@
                   :src="product.featuredImage.url"
                   :alt="product.title"
                   class="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105"
-                />
+                >
               </div>
               <div class="mt-3">
                 <h3 class="text-sm font-medium line-clamp-2">{{ product.title }}</h3>
@@ -134,7 +134,6 @@
 
 <script setup lang="ts">
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-vue-next';
 import type { SearchResults } from '~/lib/shopify/types';
 

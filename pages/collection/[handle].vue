@@ -1,8 +1,8 @@
 <template>
-  <Section className="py-10 md:py-16">
+  <Section class-name="py-10 md:py-16">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">{{ collection?.title }}</h1>
-      <ShopifySortingDropdown :list="sorting" v-model="emittedSort" @update:model-value="fetchProducts" />
+      <ShopifySortingDropdown v-model="emittedSort" :list="sorting" @update:model-value="fetchProducts" />
     </div>
 
     <div :class="{ 'opacity-50': loading && products.length === 0 }">
@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { defaultSort, sorting } from '@/lib/constants';
 import type { Product, Collection } from '@/lib/shopify/types';
-import { useInfiniteScroll, useScroll } from '@vueuse/core';
+import { useInfiniteScroll } from '@vueuse/core';
 import { Loader2 } from 'lucide-vue-next';
 
 const route = useRoute();
@@ -43,7 +43,7 @@ const collection = ref<Collection | undefined>(undefined);
 collection.value = await getCollection(handle);
 
 const { sort } = searchParams as { [key: string]: string };
-const { slug, sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
+const { slug } = sorting.find((item) => item.slug === sort) || defaultSort;
 const emittedSort = ref(slug) as Ref<string>;
 
 const products = ref<Product[]>([]);

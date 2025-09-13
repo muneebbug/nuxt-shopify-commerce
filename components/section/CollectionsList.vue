@@ -1,5 +1,5 @@
 <template>
-  <Section className="py-10 md:py-16">
+  <Section class-name="py-10 md:py-16">
     <SectionHeader
       title="Shop by Collection"
       description="Browse our featured collections"

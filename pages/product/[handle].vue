@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Section className="py-10 md:py-16">
-      <ShopifyProductDetails :product="product" v-if="product?.id" />
+    <Section class-name="py-10 md:py-16">
+      <ShopifyProductDetails v-if="product?.id" :product="product" />
     </Section>
     <!-- <pre>
       {{ data?.product?.variants?.nodes }}

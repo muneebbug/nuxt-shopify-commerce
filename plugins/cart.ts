@@ -1,6 +1,6 @@
 // plugins/cart.ts
 
-export default defineNuxtPlugin(async (nuxtApp) => {
+export default defineNuxtPlugin(async () => {
     const { initializeCart } = useCart();
     const { getCart, createCart } = useShopify();
     const cookie = useCookie('cartId');

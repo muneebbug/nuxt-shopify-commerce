@@ -1,5 +1,6 @@
 <template>
-  <div class="mb-8 md:mb-12" :class="[
+  <div
+class="mb-8 md:mb-12" :class="[
     centered ? 'text-center' : '',
     className
   ]">
@@ -14,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     default: '',

@@ -1,5 +1,5 @@
 <template>
-  <Section background="muted" className="py-10 md:py-16">
+  <Section background="muted" class-name="py-10 md:py-16">
     <SectionHeader
       title="Featured Collection"
       description="Check out our newest and most popular products"

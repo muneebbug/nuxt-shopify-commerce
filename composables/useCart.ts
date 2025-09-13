@@ -15,7 +15,7 @@ export function useCart() {
 
 
   async function addItem(selectedVariantId : string | undefined, quantity : number = 1){
-    let cartId = useCookie('cartId')?.value;
+    const cartId = useCookie('cartId')?.value;
     if (!cartId || !selectedVariantId) return 'Error adding item to cart';
 
     try {
@@ -35,9 +35,9 @@ export function useCart() {
   };
 
 
-  async function removeItem(prevState: any, merchandiseId: string) {
+  async function removeItem(merchandiseId: string) {
     console.log('removeItem', merchandiseId);
-  let cartId = useCookie('cartId')?.value;
+  const cartId = useCookie('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -59,16 +59,18 @@ export function useCart() {
       return 'Item not found in cart';
     }
   } catch (e) {
+    if (e instanceof Error) {
+      return e.message;
+    }
     return 'Error removing item from cart';
   }
   }async function updateItemQuantity(
-  prevState: any,
   payload: {
     merchandiseId: string;
     quantity: number;
   }
 ) {
- let cartId = useCookie('cartId')?.value;
+ const cartId = useCookie('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -112,10 +114,10 @@ export function useCart() {
 }
 
   async function redirectToCheckout() {
-    let cartId = useCookie('cartId')?.value;
+    const cartId = useCookie('cartId')?.value;
     if (!cartId) return 'Missing cartId Value';
 
-    let cart = await getCart(cartId);
+    const cart = await getCart(cartId);
 
     if (!cart) return 'Error Fetching Cart';
 
@@ -128,7 +130,7 @@ as the useCookie() is not available outside nuxt context
 therefore i am opting for a different solution but keeping this function here for reference
 */
   async function createCartAndSetCookie() {
-    let cart = await createCart();
+    const cart = await createCart();
     const cookie = useCookie('cartId');
     cookie.value = cart.id!
     return cart;

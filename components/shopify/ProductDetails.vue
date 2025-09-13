@@ -13,11 +13,11 @@
         <h1 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{{ product.title }}</h1>
 
         <div class="mt-4">
-          <div class="flex items-center gap-2" v-if="currentVariantCompareAtPrice > 0 && currentVariantCompareAtPrice > currentVariantPrice">
+          <div v-if="currentVariantCompareAtPrice > 0 && currentVariantCompareAtPrice > currentVariantPrice" class="flex items-center gap-2">
             <p class="text-2xl font-semibold text-primary">${{ currentVariantPrice }}</p>
             <p class="text-sm text-muted-foreground line-through">${{ currentVariantCompareAtPrice }}</p>
           </div>
-          <p class="text-2xl font-semibold" v-else>${{ currentVariantPrice }}</p>
+          <p v-else class="text-2xl font-semibold">${{ currentVariantPrice }}</p>
         </div>
       </div>
 
@@ -44,7 +44,7 @@
 
         <div class="flex items-center gap-4">
           <div class="w-24">
-            <NumberField id="quantity" :default-value="1" :min="1" v-model="quantity">
+            <NumberField id="quantity" v-model="quantity" :default-value="1" :min="1">
               <NumberFieldContent>
                 <NumberFieldDecrement />
                 <NumberFieldInput />
@@ -52,14 +52,15 @@
               </NumberFieldContent>
             </NumberField>
           </div>
-          <Button class="flex-1":loading="loading" :disabled="quantity <= 0" @click="addToCart">
+          <Button class="flex-1" :loading="loading" :disabled="quantity <= 0" @click="addToCart">
             Add to Cart
           </Button>
         </div>
 
         <div class="border-t pt-6">
           <h3 class="font-medium">Description</h3>
-          <div class="mt-4 prose prose-sm max-w-none text-muted-foreground" v-html="product.descriptionHtml"></div>
+          <!-- eslint-disable-next-line vue/no-v-html : content already sanitized and safe to render -->
+          <div class="mt-4 prose prose-sm max-w-none text-muted-foreground" v-html="product.descriptionHtml"/>
         </div>
       </div>
     </div>
@@ -69,10 +70,6 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { Button } from '@/components/ui/button'
-const { cart } = useCartStore();
-const { addItem } = useCart();
-
-const loading = ref(false);
 
 import {
   NumberField,
@@ -82,6 +79,10 @@ import {
   NumberFieldInput,
 } from '@/components/ui/number-field'
 import ProductMediaGallery from './ProductMediaGallery.vue';
+
+const { addItem } = useCart();
+
+const loading = ref(false);
 
 const quantity = ref(1);
 

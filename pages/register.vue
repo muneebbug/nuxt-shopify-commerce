@@ -8,7 +8,7 @@
         </div>
 
         <div class="bg-card rounded-lg shadow-sm p-6 border">
-          <form @submit="onSubmit" class="space-y-4">
+          <form class="space-y-4" @submit="onSubmit">
             <FormField v-slot="{ componentField }" name="firstName">
               <FormItem>
                 <FormLabel>First Name</FormLabel>
@@ -64,7 +64,8 @@
               </FormItem>
             </FormField>
 
-            <div v-if="error"
+            <div
+v-if="error"
               class="text-sm text-red-500 p-2 bg-red-50 dark:bg-red-950/30 rounded border border-red-200 dark:border-red-900">
               {{ error }}
             </div>
@@ -122,14 +123,7 @@ const registerFormSchema = toTypedSchema(z.object({
 }))
 
 const { handleSubmit } = useForm({
-  validationSchema: registerFormSchema,
-  initialValues: {
-    firstName: 'Muneeb',
-    lastName: 'Ur Rehman',
-    email: 'muneebbug@gmail.com',
-    password: 'Pakista7n',
-    acceptsMarketing: true
-  }
+  validationSchema: registerFormSchema
 })
 
 const onSubmit = handleSubmit(async (formData) => {

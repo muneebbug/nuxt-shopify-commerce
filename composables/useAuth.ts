@@ -44,7 +44,9 @@ export function useAuth() {
 
       // Handle customerUserErrors from Shopify
       return handleAuthResult(res);
+
     } catch (e: any) {
+      console.log(e);
       return {
         success: false,
         error: e.error?.message || 'An error occurred during login'

@@ -530,6 +530,7 @@ async function performPredictiveSearch({
     signInWithEmailAndPassword,
     registerAccount,
     getCustomer,
-    customerRecover
+    customerRecover,
+    reshapeCustomer
   };
 }

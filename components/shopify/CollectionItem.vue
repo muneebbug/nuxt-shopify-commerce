@@ -23,14 +23,16 @@
           </div>
         </div>
         <div class="card__image ratio flex items-stretch relative basis-1/3" style="--ratio-percent: 132.0%">
-          <NuxtLink :to="collectionUrl"
+          <NuxtLink
+:to="collectionUrl"
             class="overlay-link absolute top-0 left-0 right-0 bottom-0 w-full h-full opacity-0 z-[1]">
             {{ collection.title }}
           </NuxtLink>
           <div class="card-media w-full overflow-hidden absolute bottom-0 top-0 z-0 rounded-large">
             <div class="absolute bottom-0 top-0 w-full overflow-hidden">
-              <img class="h-full max-w-full absolute top-0 left-0 object-cover object-center"
-                src="https://ienergy-active.myshopify.com/cdn/shop/files/homeCollection1.webp?v=1712645961&width=535" />
+              <img
+class="h-full max-w-full absolute top-0 left-0 object-cover object-center"
+                src="https://ienergy-active.myshopify.com/cdn/shop/files/homeCollection1.webp?v=1712645961&width=535" >
             </div>
           </div>
         </div>

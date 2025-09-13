@@ -1,7 +1,7 @@
 // plugins/auth.ts
-export default defineNuxtPlugin(async (nuxtApp) => {
+export default defineNuxtPlugin(async () => {
   // Skip on server-side
-  if (process.server) return;
+  if (import.meta.server) return;
 
   // Wait until auth store is hydrated
   const authStore = useAuthStore();

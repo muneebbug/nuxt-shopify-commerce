@@ -7,10 +7,9 @@
         <SelectValue placeholder="Sort" />
       </SelectTrigger>
       <SelectContent>
-        <SelectLabel>
-        </SelectLabel>
+        <SelectLabel/>
         <SelectGroup>
-          <SelectItem :value="option.slug" v-for="option in props.list" :key="option.slug">
+          <SelectItem v-for="option in props.list" :key="option.slug || option.title" :value="option.slug || ''">
             {{ option.title }}
           </SelectItem>
         </SelectGroup>
@@ -20,6 +19,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { PropType } from 'vue'
+import type { SortFilterItem } from '@/lib/constants'
 import {
   Select,
   SelectContent,
@@ -32,7 +33,7 @@ import {
 
 const props = defineProps({
   list: {
-    type: Array as PropType<any[]>,
+    type: Array as PropType<SortFilterItem[]>,
     default: () => [],
   },
   modelValue: {
@@ -41,7 +42,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
-const selected = useSyncProps<string>(props, 'modelValue', emit);
+const emit = defineEmits<{
+  'update:modelValue': [string];
+}>();
+
+const selected = useSyncProps(props, 'modelValue', emit);
 </script>
 

@@ -72,7 +72,7 @@
 
         <div v-else class="text-center py-12">
           <p class="text-lg text-muted-foreground">Unable to load account information.</p>
-          <Button @click="refresh" variant="outline" class="mt-4">
+          <Button variant="outline" class="mt-4" @click="refresh">
             Try Again
           </Button>
         </div>
@@ -90,7 +90,7 @@ definePageMeta({
   layout: 'default'
 });
 
-const { user, isAuthenticated, logout, fetchUserProfile } = useAuth();
+const { user, logout, fetchUserProfile } = useAuth();
 
 const isLoading = ref(true);
 

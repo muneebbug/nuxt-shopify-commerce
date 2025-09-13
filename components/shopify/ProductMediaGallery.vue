@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Carousel class="w-full" ref="carousel">
+    <Carousel ref="carousel" class="w-full">
       <CarouselContent>
         <CarouselItem v-for="(image, index) in product?.images" :key="index" :opts="{prevNext: false}">
           <div class="overflow-hidden rounded-lg border bg-background">
@@ -8,7 +8,7 @@
               :src="image.url"
               :alt="image.altText || product.title"
               class="w-full object-cover object-center transition-all duration-300 hover:scale-105"
-            />
+            >
           </div>
         </CarouselItem>
       </CarouselContent>
@@ -29,7 +29,7 @@
             :src="image.url"
             :alt="image.altText || product.title"
             class="aspect-square h-full w-full object-cover object-center"
-          />
+          >
         </button>
       </div>
     </div>

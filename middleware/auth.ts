@@ -1,8 +1,7 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   // Skip middleware if not client-side
-  if (process.server) return;
+  if (import.meta.server) return;
 
-  const authStore = useAuthStore();
   const { checkAuth } = useAuth();
   const isAuthenticated = await checkAuth();
 

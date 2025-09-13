@@ -12,7 +12,7 @@
 </template>
 <script setup lang="ts">
 import { Toaster } from '@/components/ui/sonner'
-// @ts-ignore
+
 import { provideUseId } from '@headlessui/vue';
 provideUseId(() => useId());
 

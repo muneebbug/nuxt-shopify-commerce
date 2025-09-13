@@ -8,7 +8,7 @@
         </div>
 
         <div class="bg-card rounded-lg shadow-sm p-6 border">
-          <form @submit="onSubmit" class="space-y-4">
+          <form class="space-y-4" @submit="onSubmit">
             <FormField v-slot="{ componentField }" name="email">
               <FormItem>
                 <FormLabel>Email</FormLabel>
@@ -80,7 +80,7 @@ definePageMeta({
 });
 
 
-const email = ref('');
+
 const isLoading = ref(false);
 const error = ref<string | undefined>(undefined);
 const success = ref<string | undefined>(undefined);

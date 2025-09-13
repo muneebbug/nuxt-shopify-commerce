@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-4 md:flex-row md:justify-between">
         <div class="space-y-4">
           <NuxtLink to="/" class="flex items-center">
-            <img src="/fuel-logo.png" alt="Fuel Logo" class="h-8 w-auto" />
+            <img src="/fuel-logo.png" alt="Fuel Logo" class="h-8 w-auto" >
           </NuxtLink>
           <p class="text-sm text-muted-foreground max-w-xs">
             A modern e-commerce experience built with Nuxt 3, Shopify, and shadcn.
@@ -58,8 +58,8 @@
 </template>
 
 <script setup lang="ts">
-const { getMenu } = useShopify();
 import type { Menu } from '~/lib/shopify/types';
+const { getMenu } = useShopify();
 const navLinks = ref([]) as Ref<Menu[]>;
 
 onMounted(async () => {

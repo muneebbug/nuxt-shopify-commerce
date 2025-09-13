@@ -1,5 +1,6 @@
 <template>
-  <Button :class="[props.tiny ? 'btn--tiny' : '']"
+  <Button
+:class="[props.tiny ? 'btn--tiny' : '']"
     class="button bg-primary transition-all duration-300 inline-flex content-center items-center justify-center cursor-pointer break-words rounded-medium disabled:bg-muted disabled:cursor-not-allowed">
 
     <Icon v-if="props.loading" name="local:button-loader" size="24" class="w-[18px]" />

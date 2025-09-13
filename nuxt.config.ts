@@ -1,6 +1,6 @@
 import { createResolver } from '@nuxt/kit'
-const { resolve } = createResolver(import.meta.url)
 import tailwindcss from '@tailwindcss/vite'
+const { resolve } = createResolver(import.meta.url)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/icon',
     '@vee-validate/nuxt',
+    '@nuxt/eslint',
   ],
   alias: {
     '@': resolve('./'),

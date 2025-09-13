@@ -17,6 +17,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "typecheck": "nuxi typecheck",
     "release": "release-it"
   },
   "dependencies": {
@@ -69,7 +72,9 @@
     "ecommerce"
   ],
   "devDependencies": {
+    "@nuxt/eslint": "^1.3.0",
     "@nuxt/icon": "^1.13.0",
+    "eslint": "^9.25.0",
     "typescript": "^5.8.3"
   }
 }
