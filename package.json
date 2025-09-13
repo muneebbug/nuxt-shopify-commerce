@@ -76,5 +76,8 @@
     "@nuxt/icon": "^1.13.0",
     "eslint": "^9.25.0",
     "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": "22.19.0"
   }
 }
