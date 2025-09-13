@@ -145,9 +145,8 @@ const searchPopoverMaxHeight = computed(() => {
   align-items: center;
   padding: 10px;
   cursor: pointer;
-
   justify-content: center;
-  @apply rounded-small;
+
 
   @media screen and (min-width: 1024px) {
     margin-right: 3rem;
@@ -155,6 +154,7 @@ const searchPopoverMaxHeight = computed(() => {
     width: 56px;
     grid-area: hub;
   }
+  @apply rounded-small;
 }
 
 .header__heading-link {
