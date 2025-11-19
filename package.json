@@ -41,6 +41,7 @@
     "lucide-vue-next": "^0.554.0",
     "nuxt": "^4.2.1",
     "nuxt-headlessui": "^1.2.1",
+    "pinia": "^3.0.4",
     "reka-ui": "^2.6.0",
     "release-it": "^19.0.6",
     "shadcn-nuxt": "^2.3.3",
