@@ -1,10 +1,7 @@
-import { createResolver } from '@nuxt/kit'
 import tailwindcss from '@tailwindcss/vite'
-const { resolve } = createResolver(import.meta.url)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-11-01",
   modules: [
     '@pinia/nuxt',
     '@formkit/auto-animate',
@@ -18,16 +15,16 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxt/eslint',
   ],
-  alias: {
-    '@': resolve('./'),
+  shadcn: {
+    prefix: '',
+    componentDir: './app/components/ui',
   },
-
   // icon
   icon: {
     customCollections: [
       {
         prefix: 'local',
-        dir: './assets/icons',
+        dir: './app/assets/icons',
       }
     ]
   },
@@ -40,18 +37,11 @@ export default defineNuxtConfig({
   },
 
   css: [
-    resolve('./assets/css/tailwind.css'),
-    resolve('./assets/css/main.css')
+    './app/assets/css/tailwind.css',
+    './app/assets/css/main.css',
   ],
 
-  imports: {
-    dirs: [resolve('./stores')],
-  },
 
-  // module::pinia
-  pinia: {
-    storesDirs: [resolve('./stores/**')],
-  },
 
   // module::headlessui
   headlessui: {
@@ -63,13 +53,6 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
 
-  typescript: {
-    tsConfig: {
-      compilerOptions: {
-        baseUrl: '.'
-      }
-    }
-  },
 
   // devtools: { enabled: true },
 
@@ -85,14 +68,13 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
-
+  compatibilityDate: '2025-07-15',
   runtimeConfig: {
     public: {
-      storeDomain: process.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_STORE_DOMAIN,
-      apiVersion: process.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_API_VERSION,
-      publicAccessToken: process.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_PUBLIC_ACCESS_TOKEN
+      storeDomain: import.meta.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_STORE_DOMAIN,
+      apiVersion: import.meta.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_API_VERSION,
+      publicAccessToken: import.meta.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_PUBLIC_ACCESS_TOKEN
     }
   },
-
 
 })

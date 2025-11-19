@@ -1,152 +1,162 @@
-# Nuxt 3 Commerce
+> [!NOTE]
+> This project was previously named **nuxt3-commerce** and has been renamed to **nuxt-shopify-commerce** following the upgrade to Nuxt 4 and the transition to a version-agnostic naming structure. All functionality, Shopify Storefront API integrations, and the codebase remain the same; only the repository name has changed.
 
-A Nuxt 3 starter template for creating a custom frontend with Shopify's Storefront API. This template sets up a powerful e-commerce site using Nuxt 3, TailwindCSS, and other essential tools to integrate seamlessly with Shopify's API.
+# Nuxt Shopify Commerce
 
-- 📖 [Live Demo](https://nuxt3-commerce-wheat.vercel.app/)
-- 👀 [Play online (GitHub)](https://githubblitz.com/muneebbug/nuxt3-commerce)
-- 🔧 [CodeSandbox](https://codesandbox.io/s/github/muneebbug/nuxt3-commerce)
-- 💻 [Stackblitz](https://stackblitz.com/github/muneebbug/nuxt3-commerce)
+A modern Nuxt-based Shopify storefront starter designed for building performant, customizable e-commerce experiences. It integrates the Shopify Storefront API (GraphQL) with Nuxt 4, TailwindCSS, shadcn, Headless UI, and a full component architecture suitable for production stores.
+
+* 📖 **Live Demo:** [https://nuxt-shopify-commerce.vercel.app/](https://nuxt-shopify-commerce.vercel.app/)
+* 👀 **Play Online (GitHub):** [https://githubblitz.com/muneebbug/nuxt-shopify-commerce](https://githubblitz.com/muneebbug/nuxt-shopify-commerce)
+* 🔧 **CodeSandbox:** [https://codesandbox.io/s/github/muneebbug/nuxt-shopify-commerce](https://codesandbox.io/s/github/muneebbug/nuxt-shopify-commerce)
+* ⚡ **StackBlitz:** [https://stackblitz.com/github/muneebbug/nuxt-shopify-commerce](https://stackblitz.com/github/muneebbug/nuxt-shopify-commerce)
+
+---
 
 ## Features
 
-- [X] 📦 [Nuxt 3](https://nuxt.com/)
-- [X] 🛠 [Shopify Storefront API Client](https://shopify.dev/docs/storefront-api)
-- [X] 🎨 [Tailwind CSS](https://tailwindcss.com/)
-- [X] 🧩 [State & Store Management (Pinia)](https://pinia.vuejs.org/)
-- [X] 📦 [Vue Composition Collection (Vueuse)](https://vueuse.org/)
-- [X] 💅 [Sass](https://sass-lang.com/)
-- [X] 🧩 [Headless UI](https://headlessui.dev/)
-- [X] 🌙 [Theme Manager (Color Mode)](https://color-mode.nuxtjs.org/)
-- [X] 🧩 [Auto Animate](https://nuxt.com/modules/auto-animate)
-- [X] 🧩 [ShadCN Nuxt](https://www.shadcn-vue.com/docs/installation/nuxt)
-- [X] 🧩 [Pinia Persistent State](https://prazdevs.github.io/pinia-plugin-persistedstate/frameworks/nuxt-3.html)
+* [x] ⚡ **Nuxt 4**
+* [x] 🛠 **Shopify Storefront API (GraphQL)**
+* [x] 🎨 **Tailwind CSS**
+* [x] 🧩 **Pinia Store Management**
+* [x] 📦 **VueUse**
+* [x] 💅 **Sass Support**
+* [x] 🧩 **Headless UI**
+* [x] 🌙 **Color Mode / Theme Manager**
+* [x] 👁️ **Auto Animate**
+* [x] 🎛 **ShadCN Nuxt**
+* [x] 💾 **Pinia Persisted State**
+
+---
 
 ## Getting Started
 
-### Cloning the Repository
+### 1. Clone the Repository
 
-1. Clone the repository using:
+```bash
+git clone https://github.com/muneebbug/nuxt-shopify-commerce.git
+cd nuxt-shopify-commerce
+```
 
-   ```bash
-   git clone https://github.com/muneebbug/nuxt3-commerce.git
-   ```
+### 2. Install Dependencies
 
-2. Navigate into the project directory:
+```bash
+pnpm install
+```
 
-   ```bash
-   cd nuxt3-commerce
-   ```
+### 3. Run the Development Server
 
-### Installation
+```bash
+pnpm run dev
+```
 
-1. Install the project dependencies:
+The app will be available at `http://localhost:3000`.
 
-   ```bash
-   pnpm install
-   ```
+### 4. Production Build
 
-### Running the Application
+```bash
+pnpm run build
+```
 
-1. Start the development server:
+### 5. Generate Static Files (SSG)
 
-   ```bash
-   pnpm run dev
-   ```
+```bash
+pnpm run generate
+```
 
-   The application will be available at `http://localhost:3000`.
+### 6. Preview Production Build
 
-2. Build the application for production:
+```bash
+pnpm run preview
+```
 
-   ```bash
-   pnpm run build
-   ```
+### Additional Script
 
-3. Generate static files:
+```bash
+pnpm run postinstall
+```
 
-   ```bash
-   pnpm run generate
-   ```
+---
 
-4. Preview the production build:
+## Roadmap / To-Do
 
-   ```bash
-   pnpm run preview
-   ```
+### Core
 
-### Additional Scripts
+* [x] Nuxt 4 integration
+* [x] Shopify Storefront GraphQL client
+* [x] TailwindCSS
+* [x] Headless UI
+* [x] ShadCN Nuxt
+* [x] Pinia state management
+* [x] Theme switcher (light/dark/system)
+* [ ] ESLint configuration
+* [ ] Caching
+* [ ] SEO Enhancements
+* [ ] Accessibility (A11y)
+* [ ] Internationalization (i18n)
+* [ ] Testing
 
-- **Post-install**: Prepare the project after installing dependencies:
+### Ecommerce Features
 
-  ```bash
-  pnpm run postinstall
-  ```
+* [x] Predictive search
+* [x] Cart drawer
+* [x] Product details
+* [x] Collection list
+* [x] Product list
+* [x] Product card
+* [x] Infinite scroll for collections
 
-## To-Do
+### Pages
 
-- [X] Nuxt 3
-- [X] Shopify Storefront API GraphQL Client
-- [X] Tailwind CSS
-- [X] Headless UI
-- [X] ShadCN Nuxt
-- [X] Pinia
-- [X] 🌙 Theme Switcher (light, dark, system)
-- [ ] Eslint & Prettier
-- [ ] Caching
-- [ ] SEO
-- [ ] Accessibility
-- [ ] Internationalization
-- [ ] Testing
-- [ ] 🇮🇩 Language Switcher
-- [ ] Ecommerce Features
-  - [X] Header Predictive Search
-  - [X] Cart Drawer
-  - [X] Product Details
-  - [X] Collection List
-  - [X] Product List
-  - [X] Product Card
-  - [X] Cart Drawer
-  - [X] Infinite Scroll for collection pages
-- [ ] Pages
-  - [X] Home
-  - [X] Collection
-  - [X] Product
-  - [ ] Search
-  - [ ] Cart
-  - [ ] Wishlist
-- [ ] Account
-  - [X] Login
-  - [X] Register
-  - [X] Reset Password
-  - [X] Account Page
-  - [ ] Addresses
-  - [ ] Orders
-- [X] 📦 Components
-    - [X] Ecommerce Components
-        - [X] Hero
-        - [X] Collection List
-        - [X] Product List
-        - [X] Product Card
-        - [ ] Featured Product
-        - [X] Product Details
-    - [X] General Components
-        - [X] Button
-        - [ ] Form
-    - [ ] Modal
-    - [X] Drawers
-    - [ ] Tabs
+* [x] Home
+* [x] Collection
+* [x] Product
+* [ ] Search
+* [ ] Cart
+* [ ] Wishlist
 
+### Account
+
+* [x] Login
+* [x] Register
+* [x] Reset Password
+* [x] Account overview
+* [ ] Addresses
+* [ ] Orders
+
+### Components
+
+* **Ecommerce**
+
+  * [x] Hero
+  * [x] Collection list
+  * [x] Product list
+  * [x] Product card
+  * [ ] Featured product
+  * [x] Product details
+* **General**
+
+  * [x] Button
+  * [ ] Form components
+  * [x] Drawers
+  * [ ] Modal
+  * [ ] Tabs
+
+---
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure to follow the coding standards and include tests for your modifications.
+Contributions are welcome. Fork the repository, create a feature branch, and submit a pull request following the established coding standards. Please include relevant tests where applicable.
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is available under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+
+---
 
 ## Author
 
-- **Muneeb Ur Rehman** - [@muneebbug](https://github.com/muneebbug)
+* **Muneeb Ur Rehman** — [https://github.com/muneebbug](https://github.com/muneebbug)
 
-For questions or support, please open an issue on the GitHub repository.
-Feel free to adjust the URLs and content as needed!
+For issues or feature requests, please use the GitHub Issues section.

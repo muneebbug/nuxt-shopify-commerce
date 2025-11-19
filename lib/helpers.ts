@@ -7,7 +7,7 @@ export const validateEnvironmentVariables = () => {
   const missingEnvironmentVariables = [] as string[];
 
   requiredEnvironmentVariables.forEach((envVar) => {
-    if (!process.env[envVar]) {
+    if (!import.meta.env[envVar]) {
       missingEnvironmentVariables.push(envVar);
     }
   });
@@ -21,8 +21,8 @@ export const validateEnvironmentVariables = () => {
   }
 
   if (
-    process.env.SHOPIFY_STORE_DOMAIN?.includes('[') ||
-    process.env.SHOPIFY_STORE_DOMAIN?.includes(']')
+    import.meta.env.SHOPIFY_STORE_DOMAIN?.includes('[') ||
+    import.meta.env.SHOPIFY_STORE_DOMAIN?.includes(']')
   ) {
     throw new Error(
       'Your `SHOPIFY_STORE_DOMAIN` environment variable includes brackets (ie. `[` and / or `]`). Your site will not work with them there. Please remove them.'

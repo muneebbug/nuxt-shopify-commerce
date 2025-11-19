@@ -3,8 +3,8 @@
   "style": "default",
   "typescript": true,
   "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "assets/css/tailwind.css",
+    "config": "",
+    "css": "app/assets/css/tailwind.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
@@ -16,5 +16,6 @@
     "ui": "@/components/ui",
     "lib": "@/lib"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "registries": {}
 }
