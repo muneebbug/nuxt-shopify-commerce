@@ -9,6 +9,11 @@ export type Edge<T> = {
   cursor: string;
 };
 
+export type CustomerUserError = {
+  code: string;
+  message: string;
+};
+
 export type Cart = Omit<ShopifyCart, 'lines'> & {
   lines: CartItem[];
 };
@@ -329,10 +334,7 @@ export type ShopifySignInWithEmailAndPasswordOperation = {
         accessToken: string;
         expiresAt: string;
       };
-      customerUserErrors: {
-        code: string;
-        message: string;
-      }[];
+      customerUserErrors: CustomerUserError[];
     }
   };
   variables: {
@@ -344,11 +346,8 @@ export type ShopifySignInWithEmailAndPasswordOperation = {
 export type ShopifyRegisterAccountOperation = {
   data: {
     customerCreate: {
-      customer: Customer;
-      customerUserErrors: {
-        code: string;
-        message: string;
-      }[];
+      customer: ShopifyCustomer;
+      customerUserErrors: CustomerUserError[];
     };
   };
   variables: {
@@ -356,7 +355,7 @@ export type ShopifyRegisterAccountOperation = {
     password: string;
     firstName: string;
     lastName: string;
-    acceptsMarketing: boolean;
+    acceptsMarketing?: boolean;
   };
 };
 
@@ -408,7 +407,7 @@ export type Customer = Omit<ShopifyCustomer, 'addresses'> & {
 
 export type ShopifyCustomerOperation = {
   data: {
-    customer: Customer;
+    customer: ShopifyCustomer;
   };
   variables: {
     customerAccessToken: string;

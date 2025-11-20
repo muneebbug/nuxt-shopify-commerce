@@ -70,11 +70,10 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-07-15',
   runtimeConfig: {
-    public: {
-      storeDomain: import.meta.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_STORE_DOMAIN,
-      apiVersion: import.meta.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_API_VERSION,
-      publicAccessToken: import.meta.env.NUXT_PUBLIC_SHOPIFY_STOREFRONT_PUBLIC_ACCESS_TOKEN
-    }
+    shopifyWebhookSecret: process.env.SHOPIFY_WEBHOOK_SECRET,
+    storeDomain: import.meta.env.NUXT_SHOPIFY_STOREFRONT_STORE_DOMAIN,
+    apiVersion: import.meta.env.NUXT_SHOPIFY_STOREFRONT_API_VERSION,
+    publicAccessToken: import.meta.env.NUXT_SHOPIFY_STOREFRONT_PUBLIC_ACCESS_TOKEN
   },
 
 })

@@ -72,6 +72,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { Button } from '@/components/ui/button'
+import { toast } from 'vue-sonner';
 
 import {
   NumberField,
@@ -130,13 +131,16 @@ options.value.forEach(option => {
 const addToCart = async () => {
   loading.value = true;
   try {
-    await addItem(currentVariant.value.id, quantity.value);
+    const res = await addItem(currentVariant.value.id, quantity.value);
+    if (!res.success) {
+      toast.error(res.error || 'Failed to add item to cart');
+    }
     loading.value = false;
   }
   catch (error) {
     console.error('Error adding item to cart:', error);
+    toast.error('An unexpected error occurred');
     loading.value = false;
-    return;
   }
 }
 </script>

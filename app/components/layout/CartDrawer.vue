@@ -94,7 +94,7 @@
             <dd class="text-base font-medium">${{ formatNumber(cart?.cost?.totalAmount?.amount || 0) }}</dd>
           </div>
         </dl>
-        <Button class="mt-4 w-full" @click="redirectToCheckout">
+        <Button class="mt-4 w-full" @click="handleCheckout">
           Checkout
         </Button>
       </div>
@@ -120,6 +120,7 @@ import {
 
 import type { Cart } from '@@/lib/shopify/types';
 import { Loader2 } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 const { isOpened } = useCartDrawer()
 const cart = computed<Cart | undefined>(() => useCartStore().cart);
@@ -137,14 +138,27 @@ const updateItemLocal = async (payload: {
   quantity: number;
 }) => {
   loadingStates.value[payload.merchandiseId] = true;
-  await updateItemQuantity(payload);
+  const res = await updateItemQuantity(payload);
+  if (!res.success) {
+    toast.error(res.error || 'Failed to update item quantity');
+  }
   loadingStates.value[payload.merchandiseId] = false;
 }
 
 const removeItemLocal = async (itemId: string) => {
   loadingStates.value[itemId] = true;
-  await removeItem(itemId);
+  const res = await removeItem(itemId);
+  if (!res.success) {
+    toast.error(res.error || 'Failed to remove item');
+  }
   loadingStates.value[itemId] = false;
+};
+
+const handleCheckout = async () => {
+  const res = await redirectToCheckout();
+  if (!res.success) {
+    toast.error(res.error || 'Failed to redirect to checkout');
+  }
 };
 
 // Format number to always show two decimal places

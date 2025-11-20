@@ -1,4 +1,5 @@
-import { toast } from 'vue-sonner'
+import { toast } from 'vue-sonner';
+import type { CustomerUserError } from '@@/lib/shopify/types';
 
 // Define a type for authentication responses
 type AuthResponse = {
@@ -6,18 +7,22 @@ type AuthResponse = {
   error?: string;
 };
 
+interface ShopifyAuthResult {
+  customerUserErrors?: CustomerUserError[];
+}
+
 export function useAuth() {
   const authStore = useAuthStore();
   const { signInWithEmailAndPassword, registerAccount, getCustomer, customerRecover } = useShopify();
 
   // Centralized error handling method
-  const handleAuthResult = (res: any): AuthResponse => {
+  const handleAuthResult = (res: ShopifyAuthResult): AuthResponse => {
     // Check for customerUserErrors from Shopify responses
     if (res.customerUserErrors && res.customerUserErrors.length > 0) {
       const error = res.customerUserErrors[0];
       return {
         success: false,
-        error: error.message
+        error: error?.message || 'Unknown error'
       };
     }
 
@@ -45,11 +50,13 @@ export function useAuth() {
       // Handle customerUserErrors from Shopify
       return handleAuthResult(res);
 
-    } catch (e: any) {
-      console.log(e);
+    } catch (e: unknown) {
+      console.error('Login error:', e);
+      const err = e as { data?: { statusMessage?: string; message?: string }; message?: string };
+      const errorMessage = err.data?.statusMessage || err.data?.message || err.message || 'An error occurred during login';
       return {
         success: false,
-        error: e.error?.message || 'An error occurred during login'
+        error: errorMessage
       };
     }
   };
@@ -59,7 +66,7 @@ export function useAuth() {
     password: string,
     firstName: string,
     lastName: string,
-    acceptsMarketing: boolean,
+    acceptsMarketing?: boolean,
   }): Promise<AuthResponse> => {
     try {
       const res = await registerAccount(userData);
@@ -77,10 +84,13 @@ export function useAuth() {
       // Handle customerUserErrors from Shopify
       return handleAuthResult(res);
 
-    } catch (e: any) {
+    } catch (e: unknown) {
+      console.error('Registration error:', e);
+      const err = e as { data?: { statusMessage?: string; message?: string }; message?: string };
+      const errorMessage = err.data?.statusMessage || err.data?.message || err.message || 'An error occurred during registration';
       return {
         success: false,
-        error: e.error?.message || 'An error occurred during registration'
+        error: errorMessage
       };
     }
   };
@@ -110,11 +120,14 @@ export function useAuth() {
 
       // Handle customerUserErrors from Shopify
       return handleAuthResult(res);
-    } catch (e: any) {
+    } catch (e: unknown) {
+      console.error('Recovery error:', e);
+      const err = e as { data?: { statusMessage?: string; message?: string }; message?: string };
+      const errorMessage = err.data?.statusMessage || err.data?.message || err.message || 'Something went wrong. Please try again.';
       return {
         success: false,
-        error: e.error?.message || 'Something went wrong. Please try again.'
-      }
+        error: errorMessage
+      };
     }
   };
 

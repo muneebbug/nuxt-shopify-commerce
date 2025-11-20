@@ -14,9 +14,9 @@ export function useCart() {
   };
 
 
-  async function addItem(selectedVariantId : string | undefined, quantity : number = 1){
+  async function addItem(selectedVariantId: string | undefined, quantity: number = 1): Promise<{ success: boolean; error?: string }> {
     const cartId = useCookie('cartId')?.value;
-    if (!cartId || !selectedVariantId) return 'Error adding item to cart';
+    if (!cartId || !selectedVariantId) return { success: false, error: 'Error adding item to cart' };
 
     try {
       const cart = await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity }]);
@@ -27,101 +27,109 @@ export function useCart() {
       if (!isOpened.value === true) {
         open();
       }
+      return { success: true };
     }
     catch (e) {
       console.log(e);
-      return 'Error adding item to cart';
+      return { success: false, error: 'Error adding item to cart' };
     }
   };
 
 
-  async function removeItem(merchandiseId: string) {
+  async function removeItem(merchandiseId: string): Promise<{ success: boolean; error?: string }> {
     console.log('removeItem', merchandiseId);
-  const cartId = useCookie('cartId')?.value;
+    const cartId = useCookie('cartId')?.value;
 
-  if (!cartId) {
-    return 'Missing cart ID';
-  }
-
-  try {
-    const cart = await getCart(cartId);
-
-    if (!cart) {
-      return 'Error fetching cart';
+    if (!cartId) {
+      return { success: false, error: 'Missing cart ID' };
     }
 
-    const lineItem = cart.lines.find((line) => line.merchandise.id === merchandiseId);
+    try {
+      const cart = await getCart(cartId);
 
-    if (lineItem && lineItem.id) {
-      const cart = await removeFromCart(cartId, [lineItem.id]);
-      cartStore.setCart(cart);
-    } else {
-      return 'Item not found in cart';
-    }
-  } catch (e) {
-    if (e instanceof Error) {
-      return e.message;
-    }
-    return 'Error removing item from cart';
-  }
-  }async function updateItemQuantity(
-  payload: {
-    merchandiseId: string;
-    quantity: number;
-  }
-) {
- const cartId = useCookie('cartId')?.value;
+      if (!cart) {
+        return { success: false, error: 'Error fetching cart' };
+      }
 
-  if (!cartId) {
-    return 'Missing cart ID';
-  }
+      const lineItem = cart.lines.find((line) => line.merchandise.id === merchandiseId);
 
-  const { merchandiseId, quantity } = payload;
-
-  try {
-    const cart = await getCart(cartId);
-
-    if (!cart) {
-      return 'Error fetching cart';
-    }
-
-    const lineItem = cart.lines.find((line) => line.merchandise.id === merchandiseId);
-
-    if (lineItem && lineItem.id) {
-      if (quantity === 0) {
+      if (lineItem && lineItem.id) {
         const cart = await removeFromCart(cartId, [lineItem.id]);
         cartStore.setCart(cart);
+        return { success: true };
       } else {
-        const cart = await updateCart(cartId, [
-          {
-            id: lineItem.id,
-            merchandiseId,
-            quantity
-          }
-        ]);
+        return { success: false, error: 'Item not found in cart' };
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        return { success: false, error: e.message };
+      }
+      return { success: false, error: 'Error removing item from cart' };
+    }
+  }  async function updateItemQuantity(
+    payload: {
+      merchandiseId: string;
+      quantity: number;
+    }
+  ): Promise<{ success: boolean; error?: string }> {
+    const cartId = useCookie('cartId')?.value;
 
+    if (!cartId) {
+      return { success: false, error: 'Missing cart ID' };
+    }
+
+    const { merchandiseId, quantity } = payload;
+
+    try {
+      const cart = await getCart(cartId);
+
+      if (!cart) {
+        return { success: false, error: 'Error fetching cart' };
+      }
+
+      const lineItem = cart.lines.find((line) => line.merchandise.id === merchandiseId);
+
+      if (lineItem && lineItem.id) {
+        if (quantity === 0) {
+          const cart = await removeFromCart(cartId, [lineItem.id]);
+          cartStore.setCart(cart);
+        } else {
+          const cart = await updateCart(cartId, [
+            {
+              id: lineItem.id,
+              merchandiseId,
+              quantity
+            }
+          ]);
+
+          cartStore.setCart(cart);
+        }
+      } else if (quantity > 0) {
+        // If the item doesn't exist in the cart and quantity > 0, add it
+        const cart = await addToCart(cartId, [{ merchandiseId, quantity }]);
         cartStore.setCart(cart);
       }
-    } else if (quantity > 0) {
-      // If the item doesn't exist in the cart and quantity > 0, add it
-      const cart = await addToCart(cartId, [{ merchandiseId, quantity }]);
-      cartStore.setCart(cart);
+      return { success: true };
+    } catch (e) {
+      console.error(e);
+      return { success: false, error: 'Error updating item quantity' };
     }
-  } catch (e) {
-    console.error(e);
-    return 'Error updating item quantity';
   }
-}
 
-  async function redirectToCheckout() {
+  async function redirectToCheckout(): Promise<{ success: boolean; error?: string }> {
     const cartId = useCookie('cartId')?.value;
-    if (!cartId) return 'Missing cartId Value';
+    if (!cartId) return { success: false, error: 'Missing cartId Value' };
 
-    const cart = await getCart(cartId);
+    try {
+      const cart = await getCart(cartId);
 
-    if (!cart) return 'Error Fetching Cart';
+      if (!cart) return { success: false, error: 'Error Fetching Cart' };
 
-    navigateTo(cart.checkoutUrl, {external: true});
+      await navigateTo(cart.checkoutUrl, { external: true });
+      return { success: true };
+    } catch {
+      return { success: false, error: 'Error redirecting to checkout' };
+    }
   }
 /*
 this function should not be called. its useless at the time as it causes ssr issues.
