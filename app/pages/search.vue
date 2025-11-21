@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <Section class-name="py-10 md:py-16">
+
+    <Section>
       <SectionHeader
         :title="`Search results for: ${query || 'All products'}`"
         centered
@@ -129,7 +129,7 @@
         </div>
       </div>
     </Section>
-  </div>
+
 </template>
 
 <script setup lang="ts">

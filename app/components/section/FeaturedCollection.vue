@@ -1,11 +1,11 @@
 <template>
-  <Section background="muted" class-name="py-10 md:py-16">
+  <Section>
     <SectionHeader
       title="Featured Collection"
       description="Check out our newest and most popular products"
       centered
     />
-    <div class="mt-8 md:mt-10">
+    <div class="mt-8">
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <ShopifyProductItem v-for="product in data.products" :key="product.id" :product="product" />
       </div>

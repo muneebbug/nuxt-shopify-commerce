@@ -2,7 +2,7 @@
   <div ref="searchTarget" class="relative w-full max-w-sm">
     <form class="relative" @submit.prevent="performFullSearch">
       <Input v-model="query" type="search" placeholder="Search products..." class="w-full rounded-md pr-10"
-        @keyup="search" @input="search" @focus="open" />
+        @keyup="search" @input="search" @focus="handleFocus" />
       <button type="submit"
         class="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground">
         <Icon name="ph:magnifying-glass" class="h-4 w-4" />
@@ -36,10 +36,10 @@
               <h3 class="text-sm font-medium">Popular collections</h3>
               <div class="flex flex-wrap gap-2">
                 <NuxtLink
-                  v-for="(collection, i) in ['Nutritionals', 'Supplements', 'Protein', 'Vitamins', 'Pre-workouts']"
-                  :key="i" :to="`/collection/${collection.toLowerCase()}`"
+                  v-for="(collection, i) in popularCollections"
+                  :key="i" :to="`/collection/${collection.handle}`"
                   class="inline-flex items-center rounded-md border bg-muted px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted/80">
-                  {{ collection }}
+                  {{ collection.title }}
                 </NuxtLink>
               </div>
             </div>
@@ -120,13 +120,18 @@ import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-vue-next';
 import type { SearchResults } from '@@/lib/shopify/types';
 
-const { isSearchOpened, open, close, performSearch, isSearching } = useSearch();
+const { isSearchOpened, open, close, performSearch, isSearching, popularCollections, getPopularCollections } = useSearch();
 const query = ref('');
 
 const results = ref<SearchResults>();
 const searchTarget = ref(null);
 
+
 onClickOutside(searchTarget, () => close());
+const handleFocus = async () => {
+  await getPopularCollections();
+  open();
+}
 
 const search = useDebounceFn(async () => {
   if (!query?.value) {

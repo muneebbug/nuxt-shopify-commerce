@@ -1,6 +1,6 @@
 <template>
   <footer class="border-t">
-    <div class="container flex flex-col gap-8 py-12 md:py-16 m-auto">
+    <div class="container flex flex-col gap-8 py-12 md:py-16 m-auto mx-auto px-4 md:px-6">
       <div class="flex flex-col gap-4 md:flex-row md:justify-between">
         <div class="space-y-4">
           <NuxtLink to="/" class="flex items-center">

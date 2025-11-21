@@ -1,18 +1,16 @@
 <template>
-  <Section class-name="py-10 md:py-16">
+  <Section>
     <SectionHeader
       title="Shop by Collection"
       description="Browse our featured collections"
       centered
     />
-    <div class="mt-8 md:mt-10">
+    <div class="mt-8">
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         <ShopifyCollectionItem v-for="collection in collections.slice(0, 3)" :key="collection.id" :collection="collection" />
       </div>
       <div class="mt-10 flex justify-center">
-
           <Button to="/collection/all">View all products</Button>
-
       </div>
     </div>
   </Section>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto py-12 px-4">
+  <Section>
     <div class="flex flex-col items-center justify-center">
       <div class="w-full max-w-md mx-auto">
         <div class="text-center mb-8">
@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </Section>
 </template>
 
 <script setup lang="ts">

@@ -1,6 +1,5 @@
 <template>
-  <div class="container py-12">
-    <div class="max-w-5xl mx-auto">
+  <Section >
       <div class="flex flex-col gap-8">
         <div class="flex items-center justify-between">
           <div>
@@ -77,8 +76,7 @@
           </Button>
         </div>
       </div>
-    </div>
-  </div>
+  </Section>
 </template>
 
 <script setup lang="ts">

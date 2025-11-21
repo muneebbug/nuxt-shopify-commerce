@@ -1,9 +1,11 @@
 <template>
-  <Section class-name="py-10 md:py-16">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-      <h1 class="text-3xl font-bold tracking-tight md:text-4xl">{{ collection?.title }}</h1>
+  <Section>
+    <SectionHeader
+      :title="collection?.title"
+      class="flex justify-between items-center mb-4"
+    >
       <ShopifySortingDropdown v-model="emittedSort" :list="sorting" @update:model-value="fetchProducts" />
-    </div>
+  </SectionHeader>
 
     <div :class="{ 'opacity-50': loading && products.length === 0 }">
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

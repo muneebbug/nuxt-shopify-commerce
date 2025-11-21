@@ -1,11 +1,27 @@
+import type { Collection } from "@@/lib/shopify/types"
+
 export const useSearch = () => {
   const isSearchOpened = useState('isSearchOpened', () => false)
   const isSearching = useState('isSearching', () => false)
+  const popularCollections = useState<Collection[]>(
+    'popularCollections',
+    () => []
+  )
+
   const open = () => {
     isSearchOpened.value = true
   }
   const close = () => {
     isSearchOpened.value = false
+  }
+  const getPopularCollections = async () => {
+    const { getCollections } = useShopify();
+    if (popularCollections.value.length) {
+      return;
+    }
+    const collections = await getCollections();
+
+    popularCollections.value = collections || [];
   }
 
   const performSearch = async (query: string, type: 'normal' | 'predictive' = 'normal') => {
@@ -24,6 +40,8 @@ export const useSearch = () => {
     isSearching,
     open,
     close,
-    performSearch
+    performSearch,
+    popularCollections,
+    getPopularCollections
   }
 }

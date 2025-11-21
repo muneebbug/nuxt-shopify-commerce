@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="min-h-screen">
     <NuxtLoadingIndicator />
       <Toaster />
     <NuxtLayout>

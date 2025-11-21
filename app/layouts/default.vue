@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col ">
     <LayoutHeader />
     <LayoutCartDrawer />
-    <slot />
-    <LayoutFooter />
+    <main class="py-12">
+      <slot />
+    </main>
+    <LayoutFooter class="mt-auto" />
   </div>
 </template>
 

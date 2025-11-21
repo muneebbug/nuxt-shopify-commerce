@@ -1,7 +1,5 @@
 <template>
-  <!-- Hero Section -->
-  <Section class-name="py-12 md:py-24 lg:py-32 xl:py-36">
-      <div class="container px-4 md:px-6">
+  <Section>
         <div class="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
           <div class="flex flex-col justify-center space-y-4">
             <div class="space-y-4">
@@ -25,7 +23,6 @@
             >
           </div>
         </div>
-      </div>
     </Section>
 </template>
 

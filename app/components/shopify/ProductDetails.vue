@@ -1,7 +1,6 @@
 <template>
   <div class="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2">
     <ProductMediaGallery :product="product" />
-
     <div class="space-y-8">
       <div>
         <div class="flex items-center justify-between">

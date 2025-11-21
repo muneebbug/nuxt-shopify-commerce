@@ -1,8 +1,8 @@
 <template>
-  <Section :title="page?.title" class="py-20">
+  <Section :title="page?.title">
     <SectionHeader :title="page?.title" class="mb-0" />
     <div class="section-content__wrapper">
-      <div class="markdown prose max-w-full w-full break-words dark:prose-invert text-base-body">
+      <div class="markdown prose max-w-full w-full wrap-break-word dark:prose-invert text-base-body">
         <!-- eslint-disable-next-line vue/no-v-html : content already sanitized and safe to render -->
         <div v-html="page?.body" />
       </div>

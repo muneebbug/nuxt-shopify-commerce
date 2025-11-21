@@ -1,32 +1,33 @@
 <template>
   <section
-:class="[
-    'py-8 md:py-12',
-    background === 'secondary' ? 'bg-secondary' : 'bg-background',
-    className
-  ]">
-    <div
-:class="[
-      pageWidth ? 'container mx-auto px-4 md:px-6' : '',
-    ]">
-      <slot/>
+    :class="[
+      'container mx-auto w-full transition-colors duration-300'
+    ]"
+  >
+    <div :class="[pageWidth ? 'mx-auto px-4 sm:px-6 lg:px-8' : '', contentAlignClass]">
+      <slot />
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-defineProps({
+const props = defineProps({
   pageWidth: {
     type: Boolean,
-    default: true,
+    default: true, // limits content to container width
   },
-  background: {
+  align: {
     type: String,
-    default: '',
-  },
-  className: {
-    type: String,
-    default: '',
+    default: 'left', // 'left', 'center', 'right'
+  }
+});
+
+
+const contentAlignClass = computed(() => {
+  switch (props.align) {
+    case 'center': return 'text-center';
+    case 'right': return 'text-right';
+    default: return 'text-left';
   }
 });
 </script>

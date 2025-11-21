@@ -3,11 +3,6 @@
     <SheetContent side="right" class="flex w-full max-w-md flex-col p-0">
       <div class="flex items-center justify-between border-b px-6 py-4">
         <SheetTitle class="text-lg font-medium">Shopping Cart</SheetTitle>
-        <SheetClose
-          class="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-          <Icon name="lucide:x" class="h-4 w-4" />
-          <span class="sr-only">Close</span>
-        </SheetClose>
       </div>
 
       <div class="flex-1 overflow-y-auto">
@@ -106,7 +101,6 @@
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetTitle,
 } from '@/components/ui/sheet'

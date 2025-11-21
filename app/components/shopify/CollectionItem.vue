@@ -2,7 +2,7 @@
   <div class="collection-list__item w-full md:flex-1">
     <div class="card-wrapper h-full">
       <div
-        class="card h-full flex flex-nowrap gap-x-horizontal gap-y-vertical p-[1.5rem] md:p-[3rem] border rounded-md border-border border-opacity-20">
+        class="card h-full flex flex-nowrap gap-x-horizontal gap-y-vertical p-6 md:p-12 border rounded-md border-border border-opacity-20">
         <div class="card__content basis-2/3">
           <div class="card__information flex flex-col justify-between h-full">
             <div class="product__count">
