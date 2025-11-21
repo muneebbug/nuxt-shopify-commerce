@@ -1,5 +1,5 @@
 <template>
-  <header ref="header" class="sticky top-0 z-40 w-full border-b">
+  <header ref="header" class="sticky top-0 z-40 w-full border-b  bg-background">
     <div class="container flex h-16 items-center justify-between py-4 m-auto mx-auto px-4 md:px-6">
       <div class="flex items-center gap-4">
         <Button variant="ghost" size="icon" class="md:hidden">

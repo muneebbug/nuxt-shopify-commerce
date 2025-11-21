@@ -1,7 +1,7 @@
 <template>
   <section
     :class="[
-      'container mx-auto w-full transition-colors duration-300'
+      'container mx-auto w-full transition-colors duration-300 py-8'
     ]"
   >
     <div :class="[pageWidth ? 'mx-auto px-4 sm:px-6 lg:px-8' : '', contentAlignClass]">
